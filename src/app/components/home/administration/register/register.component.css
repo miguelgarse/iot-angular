@@ -1,0 +1,13 @@
+.background-image {
+    background-image: url(../../../../../assets/background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+.card-body{
+    box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+    -webkit-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+    -moz-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+}

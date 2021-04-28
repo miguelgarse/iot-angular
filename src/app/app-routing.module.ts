@@ -1,7 +1,45 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { RegisterComponent } from './components/home/administration/register/register.component';
+import { HomeComponent } from './components/home/home.component';
+import { MyProjectsComponent } from './components/home/my-projects/my-projects.component';
+import { FormProjectComponent } from './components/home/projects/form-project/form-project.component';
+import { ProjectsComponent } from './components/home/projects/projects.component';
+import { LoginComponent } from './components/login/login.component';
+import { ProdGuardService as guard } from './guards/prod-guard.service';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: '', component: LoginComponent },
+  { path: 'home', component: HomeComponent, children: [
+    { path: '', redirectTo: 'projects', pathMatch: 'full' },
+    {
+      path: 'projects',
+      component: ProjectsComponent,
+      canActivate: [guard], 
+      data: { expectedRol: ['admin', 'user'] }
+    },
+    {
+      path: 'my-projects',
+      component: MyProjectsComponent,
+      canActivate: [guard], 
+      data: { expectedRol: ['admin', 'user'] }
+    },
+    {
+      path: 'form-project',
+      component: FormProjectComponent,
+      canActivate: [guard], 
+      data: { expectedRol: ['admin', 'user'] }
+    },
+    {
+      path: 'register',
+      component: RegisterComponent,
+      canActivate: [guard],
+      data: { expectedRol: ['admin'] }
+    }
+  ]},
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo:''}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

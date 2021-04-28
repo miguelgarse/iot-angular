@@ -1,0 +1,49 @@
+<div class="background-image">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <zxing-scanner (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
+                        {{qrResultString}}
+                    </div>
+                       
+                </div>
+            </div>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Subir fichero con datos</label>
+                <input type="file" accept=".csv" (change)="fileChange($event)" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+
+        </form>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre del fichero</th>
+            <th scope="col">Tamaño</th>
+            <th scope="col">Tipo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let file of fileList; let i = index">
+            <th scope="row">{{i}}</th>
+            <td>{{file.name}}</td>
+            <td>{{file.size}}</td>
+            <td>{{file.type}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary" (click)="uploadFiles()" [disabled]="!fileList || fileList.length==0">Subir ficheros</button>
+
+    </div>
+
+    
+</div>

@@ -3,16 +3,51 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
+import { NavbarComponent } from './components/home/navbar/navbar.component';
+import { RegisterComponent } from './components/home/administration/register/register.component';
+import { LeafletMapComponent } from './components/home/leaflet-map/leaflet-map.component';
+import { MyProjectsComponent } from './components/home/my-projects/my-projects.component';
+import { PrincipalComponent } from './components/home/principal/principal.component';
+import { FormProjectComponent } from './components/home/projects/form-project/form-project.component';
+import { ProjectsComponent } from './components/home/projects/projects.component';
+import { LoginComponent } from './components/login/login.component';
+import { interceptorProvider } from './interceptors/prod-interceptor.service';
+import { UploadService } from './services/upload.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    NavbarComponent,
+    LoginComponent,
+    RegisterComponent,
+    PrincipalComponent,
+    ProjectsComponent,
+    MyProjectsComponent,
+    FormProjectComponent,
+    LeafletMapComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+    }),
+    ZXingScannerModule
   ],
-  providers: [],
+  providers: [
+    UploadService,
+    interceptorProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

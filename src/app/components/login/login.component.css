@@ -1,0 +1,14 @@
+
+.background-image {
+    background-image: url(https://moodle.upm.es/titulaciones/oficiales/login/imag/19_eduardo_ramos_velasco.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+
+.jumbotron-custom{
+    padding-bottom: 20px;
+    padding-top: 25px;
+}
