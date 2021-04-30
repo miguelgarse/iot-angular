@@ -3,7 +3,7 @@
 <router-outlet></router-outlet>
 
 <!-- Footer -->
-<footer class="footer font-small pt-2">
+<footer class="footer font-small pt-2" [ngClass]="{'footer-hide': verticalOffset > 10}">
 
     <div class="container">
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, } from '@angular/router';
 import { UploadService } from 'src/app/services/upload.service'
 import { TokenService } from 'src/app/services/token.service';
@@ -9,6 +9,8 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+
+  public verticalOffset: number = 0;
 
   constructor(private router: Router,
     private service: UploadService,
@@ -34,6 +36,13 @@ export class HomeComponent {
 
   getUserName(): string {
     return this.tokenService.getUserName();
+  }
+
+  @HostListener('window:scroll', ['$event']) // for window scroll events
+  onScroll($event: Event) {
+    this.verticalOffset = window.pageYOffset 
+          || document.documentElement.scrollTop 
+          || document.body.scrollTop || 0;
   }
 
 }

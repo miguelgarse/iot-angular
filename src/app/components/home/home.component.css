@@ -20,3 +20,7 @@
     width: 50px;
     margin-top: 20%;
 }
+
+.footer{
+    z-index: 99999;
+}
