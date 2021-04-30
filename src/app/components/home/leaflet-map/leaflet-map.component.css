@@ -1,0 +1,15 @@
+.map-container {
+  height: 50vh;
+  width: 90vw;
+}
+
+.map-frame {
+  height: 100%;
+  box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+  -webkit-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+  -moz-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+}
+
+#map {
+  height: 100%;
+}
