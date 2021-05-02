@@ -1,0 +1,138 @@
+
+
+<div class="background-image">
+
+  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body">
+   
+    <!-- Title -->
+    <div class="form-group">
+      <label for="title">Título</label>
+      <input type="text" class="form-control" id="title" name="title" placeholder="Título" [(ngModel)]="projectFrom.title" >
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Descripción</label>
+      <textarea type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="projectFrom.description"></textarea>
+    </div>
+
+    <!-- Keywords -->
+    <div class="form-group">
+      <label for="keywords">Palabras clave</label>
+      <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Meteorología; Temperatura; Madrid; Parque del Retiro"
+      [(ngModel)]="projectFrom.keywords">
+    </div>
+
+    <!-- Dirección -->
+    <div class="form-group">
+      <label for="userGroup">Address 2</label>
+      <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="Apartment, studio, or floor">
+    </div>
+
+    <!-- Coordenadas -->
+    <div class="form-group">
+      <label for="userGroup">Coordenadas</label>
+      <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="40.3895, -3.6270">
+      <a type="button" class="btn-floating light-blue" style="font-size: 30px;" data-toggle="modal"
+          data-target="#mapModal" title="Ver localizacion en el mapa">
+          <i class="bi bi-map"></i>
+      </a>
+    </div>
+
+    
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">City</label>
+        <input type="text" class="form-control" id="inputCity">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputState">State</label>
+        <select id="inputState" class="form-control">
+          <option selected>Choose...</option>
+          <option>...</option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputZip">Zip</label>
+        <input type="text" class="form-control" id="inputZip">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="gridCheck">
+        <label class="form-check-label" for="gridCheck">
+          Check me out
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear</button>
+  </form>
+
+  
+  
+
+  <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">Ubicación del sensor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <app-leaflet-map></app-leaflet-map>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <zxing-scanner (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
+                    {{qrResultString}}
+                </div>
+                   
+            </div>
+        </div>
+    </div>
+
+    <form>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Subir fichero con datos</label>
+            <input type="file" accept=".csv" (change)="fileChange($event)" class="form-control-file" id="exampleFormControlFile1">
+        </div>
+
+    </form>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+        <th scope="col"></th>
+        <th scope="col">Nombre del fichero</th>
+        <th scope="col">Tamaño</th>
+        <th scope="col">Tipo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let file of fileList; let i = index">
+        <th scope="row">{{i}}</th>
+        <td>{{file.name}}</td>
+        <td>{{file.size}}</td>
+        <td>{{file.type}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<button type="button" class="btn btn-primary" (click)="uploadFiles()" [disabled]="!fileList || fileList.length==0">Subir ficheros</button>
+
+</div>
+
+
+</div>
+
