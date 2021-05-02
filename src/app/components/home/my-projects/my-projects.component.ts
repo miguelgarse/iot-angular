@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Project } from 'src/app/models/Project';
 import { ProjectsService } from 'src/app/services/projects.service';
 
 @Component({
@@ -8,36 +11,25 @@ import { ProjectsService } from 'src/app/services/projects.service';
 })
 export class MyProjectsComponent implements OnInit {
 
-  public qrResultString: string = "";
-  public fileList: File[] = [];
+  public projectList: Project[] = [];
 
-  constructor(private projectsServices: ProjectsService) { }
+ 
+  constructor(private router: Router, 
+    private projectsService: ProjectsService,
+    private toastr: ToastrService) { }
+
 
   ngOnInit() {
-  }
-
-  public  handleQrCodeResult(resultString: string) {
-    this.qrResultString = resultString;
-
-  } 
-
-  fileChange(event: any) {
-    if(event.target.files != null && event.target.files.length > 0){
-      let fileSize: number = event.target.files[0].size;
-
-      this.fileList.push(event.target.files[0]);
-
-      event.target.value = '';  //Vaciamos el array en el que nos vienen los ficheros que hemos seleccionado con el input
-    }
-  }
-
-  uploadFiles(){
-    this.projectsServices.uploadFiles(this.fileList[0]).subscribe(response => {
-
+    this.projectsService.findProjectsByCurrentUser().subscribe((projectList: Project[]) => {
+      this.projectList = projectList;
     }, error => {
-      console.error('Se ha producido un error. ' + error);
+      this.toastr.error('El token ha expirado');
+     // this.router.navigate(['login'], { skipLocationChange: true });
     });
   }
 
+  redirectFormProject(projectId: number): void {
+    this.router.navigate(['home/form-project'], { skipLocationChange: true, state: { id: projectId } });
+  }
 
 }

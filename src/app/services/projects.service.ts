@@ -35,6 +35,10 @@ export class ProjectsService {
     return this.http.get<Project>(this.apiEndpoint + "/api/project/" + projectId);
   }
 
+  public findProjectsByCurrentUser(): Observable<Project[]> {
+    return this.http.get<Project[]>(this.apiEndpoint + "/api/project/byCurrentUser");
+  }
+
   public uploadFiles(file: File): Observable<any> {
     let formData: FormData = new FormData();
     formData.append('file', file, file.name);

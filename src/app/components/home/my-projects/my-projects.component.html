@@ -1,48 +1,60 @@
 <div class="background-image">
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-signin my-5">
-                    <div class="card-body">
-                        <zxing-scanner (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
-                        {{qrResultString}}
-                    </div>
-                       
-                </div>
-            </div>
-        </div>
+
+    <div class="container main-container card-body">
+        <h5>Buscador de proyectos</h5>
 
         <form>
-            <div class="form-group">
-                <label for="exampleFormControlFile1">Subir fichero con datos</label>
-                <input type="file" accept=".csv" (change)="fileChange($event)" class="form-control-file" id="exampleFormControlFile1">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="project-name">Nombre del proyecto</label>
+                    <input type="text" class="form-control" id="project-name" aria-describedby="project-name"
+                        placeholder="Proyecto">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="exampleInputPassword1">Participantes</label>
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Participantes">
+                </div>
             </div>
-
+            
+            <div class="d-flex align-items-end flex-column">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
         </form>
+    </div>
 
+    
+    <div class="card-body">
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-            <th scope="col"></th>
-            <th scope="col">Nombre del fichero</th>
-            <th scope="col">Tamaño</th>
-            <th scope="col">Tipo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let file of fileList; let i = index">
-            <th scope="row">{{i}}</th>
-            <td>{{file.name}}</td>
-            <td>{{file.size}}</td>
-            <td>{{file.type}}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <button type="button" class="btn btn-primary" (click)="uploadFiles()" [disabled]="!fileList || fileList.length==0">Subir ficheros</button>
-
+        <h5 class="card-title text-center">Mis Proyectos  
+            <a type="button" class="btn-floating light-blue" style="font-size: 30px;" data-toggle="modal"
+                    data-target="#exampleModal" title="Añadir nuevo usuario">
+                <i class="bi bi-plus-circle-fill"></i>
+            </a>
+        </h5>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Nombre del proyecto</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Palabras clave</th>
+                    <th scope="col">Ubicación</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let project of projectList; let i = index">
+                    <th scope="row">{{i}}</th>
+                    <td>{{project.title}}</td>
+                    <td>{{project.description}}</td>
+                    <td>{{project.keywords}}</td>
+                    <td>{{project.location}}</td>
+                    <a (click)="redirectFormProject(project.id)"> <i class="bi bi-search"></i></a>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     
