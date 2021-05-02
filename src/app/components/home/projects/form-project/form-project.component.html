@@ -23,12 +23,23 @@
       [(ngModel)]="projectFrom.keywords">
     </div>
 
-    <!-- User Group -->
+    <!-- Dirección -->
     <div class="form-group">
       <label for="userGroup">Address 2</label>
       <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="Apartment, studio, or floor">
     </div>
 
+    <!-- Coordenadas -->
+    <div class="form-group">
+      <label for="userGroup">Coordenadas</label>
+      <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="40.3895, -3.6270">
+      <a type="button" class="btn-floating light-blue" style="font-size: 30px;" data-toggle="modal"
+          data-target="#mapModal" title="Ver localizacion en el mapa">
+          <i class="bi bi-map"></i>
+      </a>
+    </div>
+
+    
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="inputCity">City</label>
@@ -57,7 +68,25 @@
     <button type="submit" class="btn btn-primary">Crear</button>
   </form>
 
-  <app-leaflet-map></app-leaflet-map>
   
+  
+
+  <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">Ubicación del sensor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <app-leaflet-map></app-leaflet-map>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
 </div>
 
