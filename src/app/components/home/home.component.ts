@@ -10,8 +10,6 @@ import { TokenService } from 'src/app/services/token.service';
 })
 export class HomeComponent {
 
-  public verticalOffset: number = 0;
-
   constructor(private router: Router,
     private service: UploadService,
     public tokenService: TokenService) {
@@ -36,13 +34,6 @@ export class HomeComponent {
 
   getUserName(): string {
     return this.tokenService.getUserName();
-  }
-
-  @HostListener('window:scroll', ['$event']) // for window scroll events
-  onScroll($event: Event) {
-    this.verticalOffset = window.pageYOffset 
-          || document.documentElement.scrollTop 
-          || document.body.scrollTop || 0;
   }
 
 }

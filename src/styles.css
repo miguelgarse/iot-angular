@@ -16,16 +16,6 @@
     margin-right: 20px;
 }
 
-.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: rgba(46, 69, 129, 0.801);
-    color: white;
-    text-align: center;
-  }
-
 
 .fade-in {
     text-align: center;
@@ -66,13 +56,3 @@
     to   { opacity: 1; }
 }
 
-
-
-footer {
-    height: 100px;
-    transition: height 1s;
-}
-
-.footer-hide {
-    height: 2%;
-}

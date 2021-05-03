@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { FooterComponent } from './components/home/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     ProjectsComponent,
     MyProjectsComponent,
     FormProjectComponent,
-    LeafletMapComponent
+    LeafletMapComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
