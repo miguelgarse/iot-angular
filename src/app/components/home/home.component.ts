@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, } from '@angular/router';
-import { UploadService } from 'src/app/services/upload.service'
 import { TokenService } from 'src/app/services/token.service';
 
 @Component({
@@ -11,7 +10,6 @@ import { TokenService } from 'src/app/services/token.service';
 export class HomeComponent {
 
   constructor(private router: Router,
-    private service: UploadService,
     public tokenService: TokenService) {
       // Empty constructor
   }

@@ -15,7 +15,6 @@ import { ProjectsComponent } from './components/home/projects/projects.component
 import { LoginComponent } from './components/login/login.component';
 import { interceptorProvider } from './interceptors/prod-interceptor.service';
 import { globalErrorHandlerProvider } from './handler/global-error-handler.service';
-import { UploadService } from './services/upload.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
@@ -52,7 +51,6 @@ import { FooterComponent } from './components/home/footer/footer.component';
     NgxSpinnerModule
   ],
   providers: [
-    UploadService,
     interceptorProvider,
     globalErrorHandlerProvider
   ],
