@@ -2,18 +2,24 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { TokenService } from '../services/token.service';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize, tap } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProdInterceptorService implements HttpInterceptor{
 
-  constructor(private tokenService: TokenService) { }
+  public requestCounter = 0;  // Contador de peticiones 
+
+  constructor(private tokenService: TokenService, private spinner: NgxSpinnerService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let intReq = req;
+    this.requestCounter++;
 
+    this.spinner.show(); 
+    
     const token = this.tokenService.getToken();
 
     if(token){
@@ -22,6 +28,12 @@ export class ProdInterceptorService implements HttpInterceptor{
 
     return next.handle(intReq).pipe(
       // retry(1),
+      tap (), finalize(() => {
+        this.requestCounter--;
+        if ( this.requestCounter == 0 ){
+            this.spinner.hide ();
+        }
+      }),
       catchError((error: HttpErrorResponse) => {
           let errorMessage = '';
           if (error.error instanceof ErrorEvent) {

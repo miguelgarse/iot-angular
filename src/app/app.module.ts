@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -46,7 +46,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
       timeOut: 3000,
       positionClass: 'toast-bottom-right',
     }),
-    ZXingScannerModule
+    ZXingScannerModule,
+    NgxSpinnerModule
   ],
   providers: [
     UploadService,
