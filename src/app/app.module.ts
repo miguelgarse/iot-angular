@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,7 @@ import { FormProjectComponent } from './components/home/projects/form-project/fo
 import { ProjectsComponent } from './components/home/projects/projects.component';
 import { LoginComponent } from './components/login/login.component';
 import { interceptorProvider } from './interceptors/prod-interceptor.service';
+import { globalErrorHandlerProvider } from './handler/global-error-handler.service';
 import { UploadService } from './services/upload.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -49,7 +50,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
   ],
   providers: [
     UploadService,
-    interceptorProvider
+    interceptorProvider,
+    globalErrorHandlerProvider
   ],
   bootstrap: [AppComponent]
 })

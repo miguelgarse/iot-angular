@@ -9,7 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ProdGuardService as guard } from './guards/prod-guard.service';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent, children: [
     { path: '', redirectTo: 'projects', pathMatch: 'full' },
     {
@@ -37,12 +37,12 @@ const routes: Routes = [
       data: { expectedRol: ['admin'] }
     }
   ]},
-  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo:''}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

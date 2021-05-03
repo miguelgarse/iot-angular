@@ -35,7 +35,7 @@ export class ProjectsComponent implements OnInit {
       this.projectList = projectList;
     }, error => {
       this.toastr.error('El token ha expirado');
-     // this.router.navigate(['login'], { skipLocationChange: true });
+      throw error;
     });
   }
 
