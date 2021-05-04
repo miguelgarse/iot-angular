@@ -14,3 +14,18 @@
 .footer-hide {
     height: 1px;
 }
+
+.go-top-button{
+    position: fixed !important;
+    right: 20px;
+    bottom: 40px;
+    z-index: 9999;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 40px;
+}
+
+.go-top-button:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}

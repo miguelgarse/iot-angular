@@ -43,9 +43,7 @@ export class FormProjectComponent implements OnInit {
     });
   }
   
-
-  
-  public  handleQrCodeResult(resultString: string) {
+  handleQrCodeResult(resultString: string) {
     this.qrResultString = resultString;
 
   } 
@@ -60,11 +58,12 @@ export class FormProjectComponent implements OnInit {
     }
   }
 
-  uploadFiles(){
-    this.projectsService.uploadFiles(this.fileList[0]).subscribe(response => {
+  uploadFiles(): void {
+    this.projectService.uploadFiles(this.fileList[0]).subscribe(response => {
 
     }, error => {
-      console.error('Se ha producido un error. ' + error);
+      this.toast.error('Error en la subida del fichero');
+      throw error;
     });
   }
 

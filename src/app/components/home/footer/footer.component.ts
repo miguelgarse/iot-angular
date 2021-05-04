@@ -23,4 +23,12 @@ export class FooterComponent implements OnInit {
           || document.body.scrollTop || 0;
   }
 
+
+    /**
+   * Permite hacer scroll a la parte de arriba de la pagina en la que se encuentra.
+   */
+     goToTheTop(): void {
+      window.scroll(0, 0);
+    }
+
 }

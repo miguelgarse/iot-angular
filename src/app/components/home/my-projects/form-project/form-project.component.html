@@ -2,7 +2,7 @@
 
 <div class="background-image">
 
-  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body">
+  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto custom-card-body">
    
     <!-- Title -->
     <div class="form-group">
@@ -81,7 +81,7 @@
                 </button>
             </div>
             <div class="modal-body">
-              <app-leaflet-map></app-leaflet-map>
+              <app-leaflet-map [sensorList]="null"></app-leaflet-map>
             </div>
         </div>
     </div>
@@ -92,7 +92,7 @@
     <div class="row">
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div class="card card-signin my-5">
-                <div class="card-body">
+                <div class="card-body custom-card-body">
                     <zxing-scanner (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
                     {{qrResultString}}
                 </div>

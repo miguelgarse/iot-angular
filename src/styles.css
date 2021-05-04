@@ -4,8 +4,7 @@
 @import '~bootstrap-icons/font/bootstrap-icons';  
 
 .main-container {
-    margin-top: 50px;
-    margin-left: 25px;
+    margin: 25px;
 }
 
 .background-image {
@@ -56,3 +55,22 @@
     to   { opacity: 1; }
 }
 
+.create-buttom {
+    color: #000000e3;
+    margin-top: 25px;
+    margin-left: 25px;
+    font-size: 20px;
+}
+
+.custom-card-body{
+    box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+    -webkit-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+    -moz-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+    border-radius: 5px;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+}
+
+html {
+    scroll-behavior: smooth;
+}

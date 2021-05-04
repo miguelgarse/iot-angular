@@ -39,7 +39,7 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  redirectFormProject(projectId: number): void {
+  redirectFormProject(projectId?: number): void {
     this.router.navigate(['home/form-project'], { skipLocationChange: true, state: { id: projectId } });
   }
 }

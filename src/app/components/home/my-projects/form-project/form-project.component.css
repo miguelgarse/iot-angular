@@ -6,14 +6,6 @@
     height: 100vh;
 }
 
-.card-body{
-    box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
-    -webkit-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
-    -moz-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
-    border-radius: 5px;
-    margin-bottom: 30px;
-}
-
 form{
     background-color: aliceblue;
 }

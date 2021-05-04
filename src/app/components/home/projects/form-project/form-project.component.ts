@@ -14,12 +14,12 @@ export class FormProjectComponent implements OnInit {
   public projectFrom: Project = new Project();
 
   constructor(private projectService: ProjectsService,
-              private toast: ToastrService,
-              private router: Router) { 
-      
+    private toast: ToastrService,
+    private router: Router) {
+
     let currentNavigation: any = this.router.getCurrentNavigation();
-            
-    if(currentNavigation != null && currentNavigation.extras.state.id){
+
+    if (currentNavigation != null && currentNavigation.extras.state.id) {
       let projectId: number = currentNavigation.extras.state.id;
 
       this.projectService.findProjectById(projectId).subscribe((project: Project) => {
@@ -31,12 +31,17 @@ export class FormProjectComponent implements OnInit {
   ngOnInit() {
   }
 
-  createProject(): void{
+  createProject(): void {
     this.projectService.newProject(this.projectFrom).subscribe(arg => {
       this.toast.info('Proyecto creado');
     }, error => {
       this.toast.error('Se ha producido un error al crear un nuevo proyecto');
+      throw error;
     });
   }
-  
+
+  cancelProject(): void {
+    this.router.navigate(['home']);
+  }
+
 }

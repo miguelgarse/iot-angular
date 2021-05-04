@@ -2,7 +2,7 @@
 
 <div class="background-image">
 
-  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body">
+  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body custom-card-body">
    
     <!-- Title -->
     <div class="form-group">
@@ -65,7 +65,13 @@
         </label>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
+
+
+    <div class="row">
+        <button type="submit" class="btn btn-secondary" (click)="cancelProject()">Cancelar</button>
+        <button type="submit" class="btn btn-primary offset-1" (click)="createProject()">Guardar</button>
+    </div>
+    
   </form>
 
   
