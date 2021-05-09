@@ -22,7 +22,7 @@ export class NavbarComponent implements OnInit {
   }
 
   redirectRegister(): void {
-    this.router.navigateByUrl('register', { skipLocationChange: true });
+    this.router.navigateByUrl('admin-users', { skipLocationChange: true });
   }
 
   isAdmin(): boolean {

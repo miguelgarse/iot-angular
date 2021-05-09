@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './components/home/administration/register/register.component';
+import { SensorsComponent } from './components/home/administration/sensors/sensors.component';
 import { HomeComponent } from './components/home/home.component';
 import { MyProjectsComponent } from './components/home/my-projects/my-projects.component';
 import { FormProjectComponent } from './components/home/projects/form-project/form-project.component';
@@ -31,8 +32,14 @@ const routes: Routes = [
       data: { expectedRol: ['admin', 'user'] }
     },
     {
-      path: 'register',
+      path: 'admin-users',
       component: RegisterComponent,
+      canActivate: [guard],
+      data: { expectedRol: ['admin'] }
+    },
+    {
+      path: 'admin-sensors',
+      component: SensorsComponent,
       canActivate: [guard],
       data: { expectedRol: ['admin'] }
     }

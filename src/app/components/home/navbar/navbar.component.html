@@ -8,24 +8,23 @@
     
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item" [routerLinkActive]="['active']">
+            <li class="nav-item" routerLinkActive="active">
                 <a routerLink="projects" class="nav-link"> <i class="bi bi-view-list"></i> Proyectos</a>
             </li>
 
-            <li class="nav-item" [routerLinkActive]="['active']">
+            <li class="nav-item" routerLinkActive="active">
                 <a routerLink="my-projects" class="nav-link"><i class="bi bi-plus-circle"></i> Mis Proyectos</a>
             </li>
 
-            <li class="dropdown nav-item" *ngIf="isAdmin()" [routerLinkActive]="['active']">
+            <li class="dropdown nav-item" *ngIf="isAdmin()" routerLinkActive="active">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" data-toggle="dropdown" 
                     aria-haspopup="true" aria-expanded="false">
                     <i class="bi bi-gear-fill"></i>
                     Administración
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a routerLink="register" class="dropdown-item">Usuarios</a>
-                    <a class="dropdown-item" href="#">Grupos</a>
-                    <a class="dropdown-item" href="#">Proyectos</a>
+                    <a routerLink="admin-users" class="dropdown-item">Usuarios</a>
+                    <a routerLink="admin-sensors" class="dropdown-item">Sensores</a>
                 </div>
             </li>
         </ul>

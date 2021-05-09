@@ -4,7 +4,7 @@ export class Sensor {
 
     id!: number;
     name!: string;
-    sensorTypeId!: string;
+    sensorTypeId!: number;
     createdUser!: User;
     lastModifieduser!: User;
     dateCreated!: Date;

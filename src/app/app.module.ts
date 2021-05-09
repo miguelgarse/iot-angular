@@ -21,6 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FooterComponent } from './components/home/footer/footer.component';
+import { SensorsComponent } from './components/home/administration/sensors/sensors.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FooterComponent } from './components/home/footer/footer.component';
     MyProjectsComponent,
     FormProjectComponent,
     LeafletMapComponent,
-    FooterComponent
+    FooterComponent,
+    SensorsComponent
   ],
   imports: [
     BrowserModule,
