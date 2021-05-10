@@ -25,47 +25,58 @@
 
     <!-- Dirección -->
     <div class="form-group">
-      <label for="userGroup">Address 2</label>
-      <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="Apartment, studio, or floor">
+      <label for="userGroup">Dirección del proyecto</label>
+      <input type="text" class="form-control" id="userGroup" name="userGroup" 
+             placeholder="Calle de Alan Turing, s/n, 28031, Madrid" [(ngModel)]="projectFrom.location">
     </div>
 
     <!-- Coordenadas -->
-    <div class="form-group">
-      <label for="userGroup">Coordenadas</label>
-      <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="40.3895, -3.6270">
-      <a type="button" class="btn-floating light-blue" style="font-size: 30px;" data-toggle="modal"
-          data-target="#mapModal" title="Ver localizacion en el mapa">
-          <i class="bi bi-map"></i>
-      </a>
-    </div>
-
-    
     <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="inputCity">City</label>
-        <input type="text" class="form-control" id="inputCity">
+      <div class="form-group col-8">
+        <label for="userGroup">Coordenadas</label>
+        <input type="text" class="form-control" id="userGroup" name="userGroup" 
+               placeholder="40.3895, -3.6270" >
       </div>
-      <div class="form-group col-md-4">
-        <label for="inputState">State</label>
-        <select id="inputState" class="form-control">
-          <option selected>Choose...</option>
-          <option>...</option>
-        </select>
-      </div>
-      <div class="form-group col-md-2">
-        <label for="inputZip">Zip</label>
-        <input type="text" class="form-control" id="inputZip">
+      <div class="form-group col-4">
+        <a type="button" class="btn-floating light-blue" style="font-size: 30px;" data-toggle="modal"
+           data-target="#mapModal" title="Ver localizacion en el mapa">
+          <i class="bi bi-map"></i>
+        </a>
       </div>
     </div>
-    <div class="form-group">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="gridCheck">
-        <label class="form-check-label" for="gridCheck">
-          Check me out
-        </label>
-      </div>
-    </div>
+    
 
+    <hr>
+
+    <a type="button" class="btn-floating light-blue create-buttom" title="Crear nuevo proyecto"
+       data-toggle="modal" data-target="#sensorModal">
+      <i class="bi bi-plus-square"></i> Añadir sensor
+    </a>
+
+    <table class="table table-striped" *ngIf="projectFrom.sensors">
+      <thead>
+          <tr>
+              <th scope="col"></th>
+              <th scope="col">Nombre del sensor</th>
+              <th scope="col">Tipo de sensor</th>
+              <th scope="col">Coordenadas</th>
+              <th scope="col">Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let sensor of projectFrom.sensors; let i = index">
+              <th scope="row">{{i}}</th>
+              <td>{{sensor.name}}</td>
+              <td>{{sensor.sensorTypeId}}</td>
+              <td>{{sensor.latitude}}, {{sensor.longitude}}</td>
+              <td>
+                  <a role="button" class="btn btn-outline-dark"><i class="bi bi-trash"></i></a>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+    
+  <hr>
 
     <div class="row">
         <button type="submit" class="btn btn-secondary" (click)="cancelProject()">Cancelar</button>
@@ -77,6 +88,14 @@
   
   
 
+
+
+
+
+
+
+
+
   <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -87,8 +106,47 @@
                 </button>
             </div>
             <div class="modal-body">
-              <app-leaflet-map></app-leaflet-map>
+              <!-- <app-leaflet-map></app-leaflet-map> -->
             </div>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="sensorModal" tabindex="-1" role="dialog" aria-labelledby="sensorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sensorModalLabel">Añadir sensor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+              <form>
+                <!-- Name -->
+                <div class="form-group">
+                  <label for="title">Nombre del sensor</label>
+                  <input type="text" class="form-control" id="title" name="title" placeholder="Título" [(ngModel)]="auxSensor.name" >
+                </div>
+            
+                <!-- Type -->
+                <div class="form-group">
+                  <label for="description">Tipo de sensor</label>
+                  <select class="custom-select" id="sensorType" name="sensorType" [(ngModel)]="auxSensor.sensorTypeId">
+                    <option selected>Selecciona un tipo de sensor</option>
+                    <option [value]="sensorType.id" *ngFor="let sensorType of sensorTypesMasterTable" [title]="sensorType.description">{{sensorType.name}}</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addSensor()">Añadir</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
         </div>
     </div>
   </div>
