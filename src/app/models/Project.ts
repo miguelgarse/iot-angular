@@ -1,4 +1,4 @@
-import { SensorValue } from "./SensorValue";
+import { Sensor } from "./Sensor";
 import { User } from "./User";
 
 export class Project {
@@ -7,7 +7,7 @@ export class Project {
     description!: string;
     keywords!: string;
     location!: string;
-    sensorValues!: SensorValue[];
+    sensors!: Sensor[];
     createdUser!: User;
     lastModifieduser!: User;
     dateCreated!: Date;
