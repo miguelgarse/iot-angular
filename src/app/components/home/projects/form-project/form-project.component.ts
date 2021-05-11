@@ -22,7 +22,7 @@ export class FormProjectComponent implements OnInit {
   public sensorsMasterTable: Sensor[] = [];
   public sensorTypesMasterTable: SensorType[] = [];
 
-  public auxSensor: Sensor = new Sensor("", 0, 0);
+  public auxSensor: Sensor = new Sensor();
   
   constructor(private projectService: ProjectsService,
     private sensorService: SensorService,
@@ -91,6 +91,6 @@ export class FormProjectComponent implements OnInit {
     }
     
     this.projectFrom.sensors.push(this.auxSensor);
-    this.auxSensor = new Sensor("", 0, 0);
+    this.auxSensor = new Sensor();
   }
 }

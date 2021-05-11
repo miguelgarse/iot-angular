@@ -8,6 +8,8 @@ export class Project {
     keywords!: string;
     location!: string;
     sensors!: Sensor[];
+    latitude!: number;
+    longitude!: number;
     createdUser!: User;
     lastModifieduser!: User;
     dateCreated!: Date;

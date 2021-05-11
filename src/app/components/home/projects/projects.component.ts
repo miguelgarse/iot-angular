@@ -14,19 +14,9 @@ export class ProjectsComponent implements OnInit {
 
   projectList: Project[] = [];
 
-  public sensorList: Sensor[] = [];
-
   constructor(private router: Router, 
               private projectService: ProjectsService,
               private toastr: ToastrService) {
-
-    this.sensorList.push(new Sensor("C02 troposfera", 39.260534, -4.880009));
-    this.sensorList.push(new Sensor("Humedad relativa", 39.792023, -1.655515));
-    this.sensorList.push(new Sensor("Contaminazion sonora 2ZX.34", 39.057930, -2.840172));
-    this.sensorList.push(new Sensor("Radiación solar", 39.653511, -5.453604));
-    this.sensorList.push(new Sensor("Presión atmosferica", 40.303243, -3.711627));
-    this.sensorList.push(new Sensor("Luminosidad parque", 40.366240, -3.730039));
-    this.sensorList.push(new Sensor("Temperatura de la costa de Denia", 38.891631, 0.117911));
     
   }
 

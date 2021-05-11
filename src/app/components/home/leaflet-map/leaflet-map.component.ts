@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 import * as L from 'leaflet';
-import { Sensor } from 'src/app/models/Sensor';
+import { Project } from 'src/app/models/Project';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -9,7 +9,7 @@ import { Sensor } from 'src/app/models/Sensor';
 })
 export class LeafletMapComponent implements AfterViewInit {
 
-  @Input() sensorList: Sensor[] = [];
+  @Input() projectList: Project[] = [];
 
   private map: any;
 
@@ -29,7 +29,7 @@ export class LeafletMapComponent implements AfterViewInit {
 
     tiles.addTo(this.map);
 
-    this.sensorList.forEach(sensor => {
+    this.projectList.forEach(project => {
       let sensorIcon = L.icon({
         iconUrl: '../../../../../../assets/sensor_marker.png',
     
@@ -38,8 +38,8 @@ export class LeafletMapComponent implements AfterViewInit {
         popupAnchor:  [0, -40] // point from which the popup should open relative to the iconAnchor
       });
   
-      let marker = L.marker([sensor.latitude, sensor.longitude], {icon: sensorIcon}).addTo(this.map);
-      marker.bindPopup("<b>" + sensor.name + "</b><br>Valor actual: 27º C");
+      let marker = L.marker([project.latitude, project.longitude], {icon: sensorIcon}).addTo(this.map);
+      marker.bindPopup("<b>" + project.title + "</b><br>Valor actual: 27º C");
     });
   }
   
