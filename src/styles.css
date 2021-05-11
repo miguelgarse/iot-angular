@@ -62,6 +62,10 @@
     font-size: 20px;
 }
 
+.display-4{
+    margin-left: 25px!important;
+}
+
 .custom-card-body{
     box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
     -webkit-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);

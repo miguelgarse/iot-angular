@@ -8,7 +8,7 @@ export class User {
     password!: string;
     email!: string;
     roles!: Role[];
-    createdBy!: User;
+    createdUser!: User;
 	dateCreated!: Date;
     
     constructor(){ }

@@ -32,7 +32,15 @@ export class UsersService {
   }
 
   public getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiEndpoint + "/api/admin/getAllUsers");
+    return this.http.get<User[]>(this.apiEndpoint + "/api/admin");
+  }
+
+  public getUserById(userId: number): Observable<User> {
+    return this.http.get<User>(this.apiEndpoint + "/api/admin/" + userId);
+  }
+
+  public deleteUserById(userId: number): Observable<User> {
+    return this.http.delete<User>(this.apiEndpoint + "/api/admin/" + userId);
   }
 
 }
