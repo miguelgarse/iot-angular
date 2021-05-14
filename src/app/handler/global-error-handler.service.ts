@@ -17,7 +17,7 @@ export class GlobalErrorHandlerService extends ErrorHandler {
 
             this.tokenService.logOut(); // Limpiamos el local storage
 
-            this.zone.run( () => this.router.navigate(['login']) );
+            this.zone.run( () => this.router.navigate(['login'], { skipLocationChange: true }) );
         }
 
         // Se delega el tratamiento en el manejador de angular porque las trazas de error son más detalladas

@@ -9,11 +9,11 @@
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" routerLinkActive="active">
-                <a routerLink="projects" class="nav-link"> <i class="bi bi-view-list"></i> Proyectos</a>
+                <a routerLink="projects" class="nav-link" [skipLocationChange]="true"> <i class="bi bi-view-list"></i> Proyectos</a>
             </li>
 
             <li class="nav-item" routerLinkActive="active">
-                <a routerLink="my-projects" class="nav-link"><i class="bi bi-plus-circle"></i> Mis Proyectos</a>
+                <a routerLink="my-projects" class="nav-link" [skipLocationChange]="true"><i class="bi bi-plus-circle"></i> Mis Proyectos</a>
             </li>
 
             <li class="dropdown nav-item" *ngIf="isAdmin()" routerLinkActive="active">
@@ -23,8 +23,8 @@
                     Administración
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a routerLink="admin-users" class="dropdown-item">Usuarios</a>
-                    <a routerLink="admin-sensors" class="dropdown-item">Sensores</a>
+                    <a routerLink="admin-users" class="dropdown-item" [skipLocationChange]="true">Usuarios</a>
+                    <a routerLink="admin-sensors" class="dropdown-item" [skipLocationChange]="true">Sensores</a>
                 </div>
             </li>
         </ul>

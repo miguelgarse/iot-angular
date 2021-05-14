@@ -47,7 +47,7 @@ export class FormProjectComponent implements OnInit {
         } else {
           // Project not found
           this.toast.error('Error al recuperar los datos del proyecto seleccionado');
-          this.router.navigate(['home']);
+          this.router.navigate(['home'], { skipLocationChange: true });
         }
       }, error => {
         this.toast.error('Error al recuperar los datos del proyecto seleccionado');
@@ -82,7 +82,7 @@ export class FormProjectComponent implements OnInit {
   }
 
   cancelProject(): void {
-    this.router.navigate(['home']);
+    this.router.navigate(['home'], { skipLocationChange: true });
   }
 
   addSensor(): void{
