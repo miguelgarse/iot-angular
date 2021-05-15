@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './components/home/administration/register/register.component';
 import { SensorsComponent } from './components/home/administration/sensors/sensors.component';
 import { HomeComponent } from './components/home/home.component';
-import { MyProjectsComponent } from './components/home/my-projects/my-projects.component';
 import { FormProjectComponent } from './components/home/projects/form-project/form-project.component';
 import { ProjectsComponent } from './components/home/projects/projects.component';
 import { LoginComponent } from './components/login/login.component';
@@ -16,12 +15,6 @@ const routes: Routes = [
     {
       path: 'projects',
       component: ProjectsComponent,
-      canActivate: [guard], 
-      data: { expectedRol: ['admin', 'user'] }
-    },
-    {
-      path: 'my-projects',
-      component: MyProjectsComponent,
       canActivate: [guard], 
       data: { expectedRol: ['admin', 'user'] }
     },

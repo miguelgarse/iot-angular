@@ -8,7 +8,6 @@ import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/home/navbar/navbar.component';
 import { RegisterComponent } from './components/home/administration/register/register.component';
 import { LeafletMapComponent } from './components/home/leaflet-map/leaflet-map.component';
-import { MyProjectsComponent } from './components/home/my-projects/my-projects.component';
 import { PrincipalComponent } from './components/home/principal/principal.component';
 import { FormProjectComponent } from './components/home/projects/form-project/form-project.component';
 import { ProjectsComponent } from './components/home/projects/projects.component';
@@ -32,7 +31,6 @@ import { SensorsComponent } from './components/home/administration/sensors/senso
     RegisterComponent,
     PrincipalComponent,
     ProjectsComponent,
-    MyProjectsComponent,
     FormProjectComponent,
     LeafletMapComponent,
     FooterComponent,
