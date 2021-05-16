@@ -24,6 +24,8 @@ export class FormProjectComponent implements OnInit {
 
   public auxSensor: Sensor = new Sensor();
   
+  public csvFile!: File;
+
   constructor(private projectService: ProjectsService,
     private sensorService: SensorService,
     private tokenService: TokenService,
@@ -93,4 +95,36 @@ export class FormProjectComponent implements OnInit {
     this.projectFrom.sensors.push(this.auxSensor);
     this.auxSensor = new Sensor();
   }
+
+  getSensorTypeById(sensorTypeId: number): SensorType {
+    let sensorTypeResult: SensorType = new SensorType();
+
+    this.sensorTypesMasterTable.forEach((sensorType: SensorType) => {
+      if(sensorType.id == sensorTypeId){
+        sensorTypeResult = sensorType;
+      }
+    });
+    
+    return sensorTypeResult;
+  }
+
+  fileChange(event: any) {
+    if(event.target.files != null && event.target.files.length > 0){
+      let fileSize: number = event.target.files[0].size;
+
+      this.csvFile = event.target.files[0];
+
+      event.target.value = '';  //Vaciamos el array en el que nos vienen los ficheros que hemos seleccionado con el input
+    }
+  }
+
+  uploadFiles(): void {
+    this.projectService.uploadFiles(this.csvFile).subscribe(response => {
+
+    }, error => {
+      this.toast.error('Error en la subida del fichero');
+      throw error;
+    });
+  }
+
 }
