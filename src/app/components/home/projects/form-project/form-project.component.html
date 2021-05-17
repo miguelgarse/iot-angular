@@ -86,6 +86,8 @@
       </div>
     </div>
 
+    <div echarts [options]="options" [merge]="updateOptions" class="demo-chart" *ngFor="let sensor of projectFrom.sensors"></div>
+
     <hr>
 
     <div class="row">

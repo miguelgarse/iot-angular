@@ -21,6 +21,7 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FooterComponent } from './components/home/footer/footer.component';
 import { SensorsComponent } from './components/home/administration/sensors/sensors.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,10 @@ import { SensorsComponent } from './components/home/administration/sensors/senso
       positionClass: 'toast-bottom-right',
     }),
     ZXingScannerModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
   ],
   providers: [
     interceptorProvider,
