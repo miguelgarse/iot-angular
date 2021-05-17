@@ -7,134 +7,133 @@
         <i class="bi bi-plus-square"></i> Crear Usuario
     </a>
 
-    <div class="container main-container">
-        <div class="row">
-            <div class="card-body custom-card-body">
-                <h5 class="card-title text-center">Tabla de usuarios</h5>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Nombre de usuario</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Apellidos</th>
-                            <th scope="col">Correo</th>
-                            <th scope="col">Fecha de creacion</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let user of usersList; let i = index">
-                            <th scope="row">{{i}}</th>
-                            <td>{{user.username}}</td>
-                            <td>{{user.name}}</td>
-                            <td>{{user.lastname}}</td>
-                            <td>{{user.email}}</td>
-                            <td>{{user.dateCreated | date: 'dd/MM/yyyy'}}</td>
-                            <td>
-                                <div class="row justify-content-around">
-                                    <a class="btn btn-outline-dark" role="button" (click)="editUser(user.id)" data-toggle="modal" data-target="#registerModal">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <a class="btn btn-outline-dark" role="button" (click)="deleteUser(user.id)">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="main-container card-body custom-card-body">
 
-            <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="registerModalLabel">Registro de nuevo usuario</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+        <h5 class="card-title text-center">Tabla de usuarios</h5>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Nombre de usuario</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Fecha de creacion</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of usersList; let i = index">
+                    <th scope="row">{{i}}</th>
+                    <td>{{user.username}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.lastname}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.dateCreated | date: 'dd/MM/yyyy'}}</td>
+                    <td>
+                        <div class="row justify-content-around">
+                            <a class="btn btn-outline-dark" role="button" (click)="editUser(user.id)" data-toggle="modal" data-target="#registerModal">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a class="btn btn-outline-dark" role="button" (click)="deleteUser(user.id)">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </div>
-                        <div class="modal-body">
-                            <form autocomplete="off" #registerForm="ngForm" id="registerForm">
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="inputRegisterUser">Nombre</label>
-                                        <input type="text" class="form-control" id="inputRegisterUser" autocomplete="off"
-                                            name="inputRegisterUser" [(ngModel)]="user.name" maxlength="64" required>
-                                    </div>
-                                    <div class="form-group col-md-8">
-                                        <label for="inputRegisterUser">Apellidos</label>
-                                        <input type="text" class="form-control" id="inputRegisterUser" autocomplete="off"
-                                            name="inputRegisterUser" [(ngModel)]="user.lastname" maxlength="64" required>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="inputRegisterUser">Usuario</label>
-                                        <input type="text" class="form-control" id="inputRegisterUser" autocomplete="off"
-                                            name="inputRegisterUser" [(ngModel)]="user.username" maxlength="64" required>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="inputRegisterEmail">Correo</label>
-                                        <input type="email" class="form-control" id="inputRegisterEmail" autocomplete="off"
-                                            name="inputRegisterEmail" [(ngModel)]="user.email" maxlength="512" required>  
-                                    </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-                                    <!-- ROLE -->
-                                    <div class="form-group col-md-12">
-                                        <label for="inputRoles">Roles</label>
-                                        <select class="custom-select" multiple id="inputRoles" name="inputRoles"
-                                            [(ngModel)]="user.roles">
-                                            <option selected>Elige los roles</option>
-                                            <option value="admin">Administrador</option>
-                                            <option value="user">Usuario</option>
-                                        </select>
-                                    </div>
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Registro de nuevo usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off" #registerForm="ngForm" id="registerForm">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="inputRegisterUser">Nombre</label>
+                                <input type="text" class="form-control" id="inputRegisterUser" autocomplete="off"
+                                    name="inputRegisterUser" [(ngModel)]="user.name" maxlength="64" required>
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="inputRegisterUser">Apellidos</label>
+                                <input type="text" class="form-control" id="inputRegisterUser" autocomplete="off"
+                                    name="inputRegisterUser" [(ngModel)]="user.lastname" maxlength="64" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputRegisterUser">Usuario</label>
+                                <input type="text" class="form-control" id="inputRegisterUser" autocomplete="off"
+                                    name="inputRegisterUser" [(ngModel)]="user.username" maxlength="64" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputRegisterEmail">Correo</label>
+                                <input type="email" class="form-control" id="inputRegisterEmail" autocomplete="off"
+                                    name="inputRegisterEmail" [(ngModel)]="user.email" maxlength="512" required>  
+                            </div>
 
-                                    <!-- Password -->
-                                    <div class="form-group col-md-4">
-                                        <label for="inputPassword1">Contraseña</label>
-                                        <div class="input-group">
-                                            <input [type]="showPassword?'text':'password'" class="form-control" id="inputPassword1" autocomplete="off"
-                                                name="inputPassword1" [(ngModel)]="user.password" maxlength="512" required>
-                                            <div class="input-group-append">
-                                                <a class="btn btn-outline-dark" role="button" (click)="changeShowPassword()">
-                                                    <i class="bi bi-eye-fill"></i>
-                                                </a>
-                                            </div>
-                                        </div>
+                            <!-- ROLE -->
+                            <div class="form-group col-md-12">
+                                <label for="inputRoles">Roles</label>
+                                <select class="custom-select" multiple id="inputRoles" name="inputRoles"
+                                    [(ngModel)]="user.roles">
+                                    <option selected>Elige los roles</option>
+                                    <option value="admin">Administrador</option>
+                                    <option value="user">Usuario</option>
+                                </select>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="form-group col-md-4">
+                                <label for="inputPassword1">Contraseña</label>
+                                <div class="input-group">
+                                    <input [type]="showPassword?'text':'password'" class="form-control" id="inputPassword1" autocomplete="off"
+                                        name="inputPassword1" [(ngModel)]="user.password" maxlength="512" required>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-outline-dark" role="button" (click)="changeShowPassword()">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputPassword2">Repita contraseña</label>
-                                        <input type="password" [disabled]="showPassword" class="form-control" id="inputPassword2" autocomplete="off"
-                                            name="inputPassword2" [(ngModel)]="repeatedPassword" maxlength="512" required>
-                                    </div>
-                                    <span class="col-md-4"></span>
                                 </div>
-
-                                <hr *ngIf="user.id">
-
-                                <div class="form-row" *ngIf="user.id">
-                                    <div class="form-group col-md-4">
-                                        <label for="inputRegisterUser">Fecha de creación</label>
-                                        <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.dateCreated | date: 'dd/MM/yyyy'">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="inputRegisterUser">Creador</label>
-                                        <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.createdUser.username">
-                                    </div>
-                                    <span class="col-md-2"></span>
-                                </div>
-                            </form>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputPassword2">Repita contraseña</label>
+                                <input type="password" [disabled]="showPassword" class="form-control" id="inputPassword2" autocomplete="off"
+                                    name="inputPassword2" [(ngModel)]="repeatedPassword" maxlength="512" required>
+                            </div>
+                            <span class="col-md-4"></span>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" #registerFormSubmit class="btn btn-primary" data-dismiss="modal"
-                                [disabled]="user.password != repeatedPassword" (click)="register()">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+                        <hr *ngIf="user.id">
+
+                        <div class="form-row" *ngIf="user.id">
+                            <div class="form-group col-md-4">
+                                <label for="inputRegisterUser">Fecha de creación</label>
+                                <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.dateCreated | date: 'dd/MM/yyyy'">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputRegisterUser">Creador</label>
+                                <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.createdUser.username">
+                            </div>
+                            <span class="col-md-2"></span>
                         </div>
-                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" #registerFormSubmit class="btn btn-primary" data-dismiss="modal"
+                        [disabled]="user.password != repeatedPassword" (click)="register()">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+            
 </div>
