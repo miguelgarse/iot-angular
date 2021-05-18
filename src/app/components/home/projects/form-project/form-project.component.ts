@@ -162,7 +162,7 @@ export class FormProjectComponent implements OnInit, OnDestroy {
   }
 
   createProject(): void {
-    this.projectService.newProject(this.projectFrom).subscribe(arg => {
+    this.projectService.newProject(this.projectFrom, this.csvFile).subscribe(arg => {
       this.toast.info('Proyecto creado');
     }, error => {
       this.toast.error('Se ha producido un error al crear un nuevo proyecto');

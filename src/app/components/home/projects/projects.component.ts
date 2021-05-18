@@ -21,6 +21,10 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getProjectList();
+  }
+
+  getProjectList(): void{
     this.projectService.findAllProjects().subscribe((projectList: Project[]) => {
       this.projectList = projectList;
     }, error => {
@@ -29,7 +33,18 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  redirectFormProject(projectId?: number): void {
+  formProject(projectId?: number): void {
     this.router.navigate(['home/form-project'], { skipLocationChange: true, state: { id: projectId } });
+  }
+
+  deleteProject(projectId: number): void{
+    this.projectService.deleteProjectById(projectId).subscribe((project: Project) => {
+      if(project && project.id){
+        this.toastr.success("El proyecto " + project.title + " ha sido borrado");
+        this.getProjectList();
+      }
+    }, error => {
+      throw error;
+    });
   }
 }
