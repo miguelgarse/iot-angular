@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/models/Project';
 import { Sensor } from 'src/app/models/Sensor';
 import { SensorType } from 'src/app/models/SensorType';
+import { SensorValue } from 'src/app/models/SensorValue';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -26,12 +27,8 @@ export class FormProjectComponent implements OnInit, OnDestroy {
   
   public csvFile!: File;
 
-  options: any;
-  updateOptions: any;
-  private oneDay = 24 * 3600 * 1000;
-  private now!: Date;
-  private value!: number ;
-  private data!: any[];
+  public graphsOptions: any[] = [];
+  
   private timer: any;
 
   constructor(private projectService: ProjectsService,
@@ -81,24 +78,37 @@ export class FormProjectComponent implements OnInit, OnDestroy {
     });
     
     
+    this.sensorService.findAllSensorValuesByProjectId(this.projectFrom.id).subscribe((sensors: Sensor[]) => {
+      sensors.forEach(sensor => {
+        this.createGraph(sensor);
+      });
+    }, error => {
+      throw error;
+    });
+  }
 
 
+  ngOnDestroy() {
+    clearInterval(this.timer);
+  }
 
-    // ******************
+  createGraph(sensor: Sensor): void{
+ // ******************
 
     // generate some random testing data:
-    this.data = [];
-    this.now = new Date(1997, 9, 3);
-    this.value = Math.random() * 1000;
+    let data: any[] = [];
 
-    for (let i = 0; i < 1000; i++) {
-      this.data.push(this.randomData());
-    }
+    sensor.sensorValues.forEach(element => {
+      data.push({
+        name: element.timestamp,
+        value: element.value
+      })
+    });
 
     // initialize chart options:
-    this.options = {
+    this.graphsOptions.push({
       title: {
-        text: 'Sensor'
+        text: sensor.name
       },
       tooltip: {
         trigger: 'axis',
@@ -129,37 +139,11 @@ export class FormProjectComponent implements OnInit, OnDestroy {
         type: 'line',
         showSymbol: false,
         hoverAnimation: false,
-        data: this.data
+        data: data
       }]
-    };
-
-   
-    for (let i = 0; i < 5; i++) {
-      this.data.shift();
-      this.data.push(this.randomData());
-    }
-
-    
-
+    });
   }
 
-
-  ngOnDestroy() {
-    clearInterval(this.timer);
-  }
-
-
-  randomData() {
-    this.now = new Date(this.now.getTime() + this.oneDay);
-    this.value = this.value + Math.random() * 21 - 10;
-    return {
-      name: this.now.toString(),
-      value: [
-        [this.now.getFullYear(), this.now.getMonth() + 1, this.now.getDate()].join('/'),
-        Math.round(this.value)
-      ]
-    };
-  }
 
   createProject(): void {
     this.projectService.newProject(this.projectFrom, this.csvFile).subscribe(arg => {
