@@ -5,6 +5,7 @@ import { SensorsComponent } from './components/home/administration/sensors/senso
 import { HomeComponent } from './components/home/home.component';
 import { FormProjectComponent } from './components/home/projects/form-project/form-project.component';
 import { ProjectsComponent } from './components/home/projects/projects.component';
+import { UserProfileComponent } from './components/home/user-profile/user-profile.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProdGuardService as guard } from './guards/prod-guard.service';
 
@@ -21,6 +22,12 @@ const routes: Routes = [
     {
       path: 'form-project',
       component: FormProjectComponent,
+      canActivate: [guard], 
+      data: { expectedRol: ['admin', 'user'] }
+    },
+    {
+      path: 'user-profile',
+      component: UserProfileComponent,
       canActivate: [guard], 
       data: { expectedRol: ['admin', 'user'] }
     },
