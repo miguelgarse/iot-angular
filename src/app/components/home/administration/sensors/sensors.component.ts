@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Sensor } from 'src/app/models/Sensor';
+import { SensorType } from 'src/app/models/SensorType';
 import { SensorService } from 'src/app/services/sensor.service';
 
 @Component({
@@ -10,21 +11,21 @@ import { SensorService } from 'src/app/services/sensor.service';
 })
 export class SensorsComponent implements OnInit {
 
-  public sensorList: Sensor[] = [];
+  public sensorTypeList: SensorType[] = [];
   
   constructor(private sensorService: SensorService,
     private toastr: ToastrService) {
-      this.getUserList();
-     }
+      this.getSensorTypeList();
+  }
 
   ngOnInit(): void {
   }
 
-  public getUserList(): void {
-    this.sensorService.findAllSensors().subscribe((sensors: Sensor[]) => {
-      this.sensorList = sensors;
+  public getSensorTypeList(): void {
+    this.sensorService.findAllSensorTypes().subscribe((sensors: SensorType[]) => {
+      this.sensorTypeList = sensors;
     }, error => {
-      this.toastr.error('Error al obtener todos los sensores');
+      this.toastr.error('Error al obtener todos los tipos de sensor');
       throw error;
     });
   }
