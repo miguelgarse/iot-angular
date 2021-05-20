@@ -48,7 +48,7 @@
 
     <hr>
 
-    <a type="button" class="btn-floating light-blue create-buttom" title="Crear nuevo proyecto"
+    <!-- <a type="button" class="btn-floating light-blue create-buttom" title="Crear nuevo proyecto"
        data-toggle="modal" data-target="#sensorModal">
       <i class="bi bi-plus-square"></i> Añadir sensor
     </a>
@@ -74,7 +74,7 @@
       </tbody>
     </table>
 
-    <hr>
+    <hr> -->
 
     <div class="input-group mb-3">
       <div class="input-group-prepend">
@@ -85,6 +85,8 @@
         <label class="custom-file-label" for="uploadCsv">{{csvFile?csvFile.name:"Seleccione un fichero"}}</label>
       </div>
     </div>
+
+    <div echarts [options]="opts" class="demo-chart" *ngFor="let opts of graphsOptions"></div>
 
     <hr>
 

@@ -21,6 +21,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { FooterComponent } from './components/home/common/footer/footer.component';
 import { SensorsComponent } from './components/home/administration/sensors/sensors.component';
 import { UserProfileComponent } from './components/home/user-profile/user-profile.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,10 @@ import { UserProfileComponent } from './components/home/user-profile/user-profil
       positionClass: 'toast-bottom-right',
     }),
     ZXingScannerModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
   ],
   providers: [
     interceptorProvider,
