@@ -1,35 +1,35 @@
 <div class="background-image">
 
-    <div class="container main-container">
-        <div class="row">
+    <h1 class="display-4">Administración de tipos de sensores</h1>
 
-            <div class="card-body custom-card-body">
+    <a type="button" class="btn-floating light-blue create-buttom" title="Crear nuevo usuario" 
+        data-toggle="modal" data-target="#registerModal">
+        <i class="bi bi-plus-square"></i> Crear tipo de sensor
+    </a>
 
-                <h5 class="card-title text-center">Tabla de sensores</h5>
-                
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Nombre del sensor</th>
-                            <th scope="col">Tipo de sensor</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let sensor of sensorList; let i = index">
-                            <th scope="row">{{i}}</th>
-                            <td>{{sensor.name}}</td>
-                            <td>{{sensor.sensorTypeId}}</td>
-                            <td>
-                                <a role="button" class="btn btn-outline-dark"><i class="bi bi-trash"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
-            
-        </div>
+    <div class="main-container card-body custom-card-body">
+
+        <h5 class="card-title text-center">Tabla de tipos de sensore</h5>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Tipo de sensor</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sensor of sensorTypeList; let i = index">
+                    <th scope="row">{{i}}</th>
+                    <td>{{sensor.name}}</td>
+                    <td>
+                        <a role="button" class="btn btn-outline-dark"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+
 </div>
