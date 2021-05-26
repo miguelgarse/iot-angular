@@ -43,7 +43,7 @@
     </div>
 
     
-    <div class="main-container card-body custom-card-body">
+    <div class="main-container card-body custom-card-body" style="padding-bottom: 50px">
         <h5 class="card-title text-center">Tabla de Proyectos</h5>
 
         <table class="table table-striped">
@@ -79,8 +79,8 @@
         </table>
     </div>
 
-    <div style="padding-bottom: 50px">
-        <app-leaflet-map [projectList]="projectList" ></app-leaflet-map>
+    <div style="padding-bottom: 50px" *ngIf="false">
+        <app-leaflet-map [projectList]="projectList"></app-leaflet-map>
     </div>
     
 </div>

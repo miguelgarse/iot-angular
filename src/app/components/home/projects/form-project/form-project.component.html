@@ -34,49 +34,51 @@
     <div class="form-row">
       <div class="form-group col-8">
         <label for="userGroup">Coordenadas</label>
-        <input type="text" class="form-control" id="userGroup" name="userGroup" 
-               placeholder="40.3895, -3.6270" >
-      </div>
-      <div class="form-group col-4">
-        <a type="button" class="btn-floating light-blue" style="font-size: 30px;" data-toggle="modal"
-           data-target="#mapModal" title="Ver localizacion en el mapa">
-          <i class="bi bi-map"></i>
-        </a>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="40.3895, -3.6270">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="mapModalButton" 
+                    title="Ver localizacion en el mapa" (click)="openMapModal()"><i class="bi bi-map"></i></button>
+          </div>
+        </div>
       </div>
     </div>
     
 
     <hr>
 
-    <!-- <a type="button" class="btn-floating light-blue create-buttom" title="Crear nuevo proyecto"
-       data-toggle="modal" data-target="#sensorModal">
-      <i class="bi bi-plus-square"></i> Añadir sensor
-    </a>
+    <div>
+      <a type="button" class="btn-floating light-blue create-buttom" title="Crear nuevo proyecto"
+          data-toggle="modal" data-target="#sensorModal" *ngIf="!isEdition">
+        <i class="bi bi-plus-square"></i> Añadir sensor
+      </a>
 
-    <table class="table table-striped" *ngIf="projectFrom.sensors">
-      <thead>
-          <tr>
-              <th scope="col"></th>
-              <th scope="col">Nombre del sensor</th>
-              <th scope="col">Tipo de sensor</th>
-              <th scope="col">Acciones</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let sensor of projectFrom.sensors; let i = index">
-              <th scope="row">{{i}}</th>
-              <td>{{sensor.name}}</td>
-              <td>{{getSensorTypeById(sensor.sensorTypeId).name}}</td>
-              <td>
-                  <a role="button" class="btn btn-outline-dark"><i class="bi bi-trash"></i></a>
-              </td>
-          </tr>
-      </tbody>
-    </table>
+      <table class="table table-striped" *ngIf="projectFrom.sensors">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Nombre del sensor</th>
+                <th scope="col">Tipo de sensor</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let sensor of projectFrom.sensors; let i = index">
+                <th scope="row">{{i}}</th>
+                <td>{{sensor.name}}</td>
+                <td>{{getSensorTypeById(sensor.sensorTypeId).code}}</td>
+                <td>
+                    <a role="button" class="btn btn-outline-dark"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        </tbody>
+      </table>
 
-    <hr> -->
-
-    <div class="input-group mb-3">
+      <hr>
+    </div>
+    
+    <!-- Datos de los sensores -->
+    <div class="input-group mb-3" *ngIf="isEdition">
       <div class="input-group-prepend">
         <span class="input-group-text" id="inputGroupFileAddon01">Añadir datos</span>
       </div>
@@ -84,15 +86,16 @@
         <input type="file" accept=".csv" class="custom-file-input" id="uploadCsv" aria-describedby="inputGroupFileAddon01" (change)="fileChange($event)">
         <label class="custom-file-label" for="uploadCsv">{{csvFile?csvFile.name:"Seleccione un fichero"}}</label>
       </div>
+      
+      <!-- Gráficas -->
+      <div echarts [options]="graphsOptions" class="demo-chart"  style="width: 100%; min-height: 400px; margin-top: 50px;"></div>
     </div>
-
-    <div echarts [options]="opts" class="demo-chart" *ngFor="let opts of graphsOptions"></div>
 
     <hr>
 
     <div class="row">
         <button type="submit" class="btn btn-secondary" (click)="cancelProject()">Cancelar</button>
-        <button type="submit" class="btn btn-primary offset-1" (click)="createProject()">Guardar</button>
+        <button type="submit" class="btn btn-primary offset-1" (click)="createUpdateProject()">Guardar</button>
     </div>
     
   </form>
@@ -108,18 +111,22 @@
 
 
 
-  <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade" id="mapModal" tabindex="-1" #mapModal>
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mapModalLabel">Ubicación del sensor</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-              <!-- <app-leaflet-map></app-leaflet-map> -->
-            </div>
+          <div class="modal-header">
+              <h5 class="modal-title" id="mapModalLabel">Ubicación del Proyecto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <app-leaflet-map [projectList]="[]"></app-leaflet-map>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Acceptar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
         </div>
     </div>
   </div>
@@ -148,7 +155,7 @@
                   <label for="description">Tipo de sensor</label>
                   <select class="custom-select" id="sensorType" name="sensorType" [(ngModel)]="auxSensor.sensorTypeId">
                     <option value="0"selected>Selecciona un tipo de sensor</option>
-                    <option [value]="sensorType.id" *ngFor="let sensorType of sensorTypesMasterTable" [title]="sensorType.description">{{sensorType.name}}</option>
+                    <option [value]="sensorType.id" *ngFor="let sensorType of sensorTypesMasterTable" [title]="sensorType.description">{{sensorType.code}}</option>
                   </select>
                 </div>
               </form>
