@@ -26,6 +26,7 @@
     "bootstrap-icons": "^1.4.1",
     "echarts": "^5.1.1",
     "leaflet": "^1.7.1",
+    "ngx-bootstrap": "^6.2.0",
     "ngx-echarts": "^7.0.1",
     "ngx-spinner": "^11.0.1",
     "ngx-toastr": "^13.2.1",

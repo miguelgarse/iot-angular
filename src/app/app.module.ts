@@ -22,6 +22,9 @@ import { FooterComponent } from './components/home/common/footer/footer.componen
 import { SensorsComponent } from './components/home/administration/sensors/sensors.component';
 import { UserProfileComponent } from './components/home/user-profile/user-profile.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { ConfirmDialogComponent } from './components/home/common/confirm-dialog/confirm-dialog.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { RatingModule } from 'ngx-bootstrap/rating';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import { NgxEchartsModule } from 'ngx-echarts';
     LeafletMapComponent,
     FooterComponent,
     SensorsComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,9 @@ import { NgxEchartsModule } from 'ngx-echarts';
     NgxSpinnerModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
-    })
+    }), 
+    ModalModule.forRoot(),
+    RatingModule.forRoot()
   ],
   providers: [
     interceptorProvider,
