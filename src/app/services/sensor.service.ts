@@ -49,4 +49,8 @@ export class SensorService {
     return this.http.get<Sensor[]>(this.apiEndpoint + "/api/sensorValue/findAllByProjectId/" + projectId);
   }
   
+  public deleteSensorTypeById(sensorTypeId: number): Observable<void> {
+    return this.http.delete<void>(this.apiEndpoint + "/api/sensorType/" + sensorTypeId);
+  }
+  
 }

@@ -1,6 +1,6 @@
 
 .background-image {
-    background-image: url(https://moodle.upm.es/titulaciones/oficiales/login/imag/19_eduardo_ramos_velasco.jpg);
+    background-image: url(../../../assets/background_login.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;

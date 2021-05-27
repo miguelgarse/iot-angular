@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/models/Project';
@@ -9,27 +9,31 @@ import { ProjectsService } from 'src/app/services/projects.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { TokenService } from 'src/app/services/token.service';
 
+// jQuery Sign $
+declare let $: any;
+
 @Component({
   selector: 'app-form-project',
   templateUrl: './form-project.component.html',
   styleUrls: ['./form-project.component.css']
 })
-export class FormProjectComponent implements OnInit, OnDestroy {
+export class FormProjectComponent implements OnInit {
 
   public isEdition: boolean = false;
+  public isReadOnly: boolean = false;
   public isCurrentUserCreator = false;
 
+  public projectId!: number;
   public projectFrom: Project = new Project();
-  public sensorsMasterTable: Sensor[] = [];
   public sensorTypesMasterTable: SensorType[] = [];
 
   public auxSensor: Sensor = new Sensor();
   
   public csvFile!: File;
 
-  public graphsOptions: any[] = [];
+  public graphsOptions: any;
   
-  private timer: any;
+  @ViewChild('mapModal') mapModal!: ElementRef;
 
   constructor(private projectService: ProjectsService,
     private sensorService: SensorService,
@@ -40,14 +44,27 @@ export class FormProjectComponent implements OnInit, OnDestroy {
     let currentNavigation: any = this.router.getCurrentNavigation();
 
     if (currentNavigation != null && currentNavigation.extras.state.id) {
-      let projectId: number = currentNavigation.extras.state.id;
+      this.projectId = currentNavigation.extras.state.id;
 
       this.isEdition = true;
+    }
+  }
 
-      this.projectService.findProjectById(projectId).subscribe((project: Project) => {
+  ngOnInit() {
+    // Get all sensors types
+    this.sensorService.findAllSensorTypes().subscribe((sensorTypes: SensorType[]) => {
+      this.sensorTypesMasterTable = sensorTypes;
+    }, error => {
+      throw error;
+    });
+
+    if(this.projectId && this.isEdition){
+      this.projectService.findProjectById(this.projectId).subscribe((project: Project) => {
         if(project && project.id){
           this.projectFrom = project;
-
+  
+          this.createGraph(project.sensors);
+          
           if(project.createdUser.username == this.tokenService.getUserName()){
             this.isCurrentUserCreator = true;
           }
@@ -63,59 +80,53 @@ export class FormProjectComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  createGraph(sensors: Sensor[]): void{
+    let series: any[] = [];
+    let xAxis: Date[] = [];
+    let leyend: string[] = [];
 
-    this.sensorService.findAllSensors().subscribe((sensors: Sensor[]) => {
-      this.sensorsMasterTable = sensors;
-    }, error => {
-      throw error;
-    });
-
-    this.sensorService.findAllSensorTypes().subscribe((sensorTypes: SensorType[]) => {
-      this.sensorTypesMasterTable = sensorTypes;
-    }, error => {
-      throw error;
-    });
-    
-    
-    this.sensorService.findAllSensorValuesByProjectId(this.projectFrom.id).subscribe((sensors: Sensor[]) => {
-      sensors.forEach(sensor => {
-        this.createGraph(sensor);
+    sensors.forEach(sensor => {
+      let data: any[] = [];
+      sensor.sensorValues.forEach(element => {
+        console.info("Sensor name: " + sensor.name + " - " + element.timestamp + " -- " + element.value);
+        data.push({
+          name: element.timestamp,
+          value: element.value
+        })
       });
-    }, error => {
-      throw error;
-    });
-  }
 
+      leyend.push(this.getSensorTypeById(sensor.sensorTypeId).code);
 
-  ngOnDestroy() {
-    clearInterval(this.timer);
-  }
-
-  createGraph(sensor: Sensor): void{
- // ******************
-
-    // generate some random testing data:
-    let data: any[] = [];
-
-    sensor.sensorValues.forEach(element => {
-      data.push({
-        name: element.timestamp,
-        value: element.value
-      })
+      series.push({
+        name: this.getSensorTypeById(sensor.sensorTypeId).code,
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        data: data
+      });
+      
     });
 
-    // initialize chart options:
-    this.graphsOptions.push({
+    // Creamos los valores del eje X
+    sensors[0].sensorValues.forEach(sensorValue => {
+      xAxis.push(sensorValue.timestamp);
+    });
+
+    // Creamos las opciones de la gráfica
+    this.graphsOptions = {
+      legend: {
+        data: leyend,
+        align: 'left',
+      },
       title: {
-        text: sensor.name
+        text: this.projectFrom.title
       },
       tooltip: {
         trigger: 'axis',
         formatter: (params: any) => {
           params = params[0];
           const date = new Date(params.name);
-          return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+          return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " - " + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ' -- ' + params.value;
         },
         axisPointer: {
           animation: false
@@ -125,7 +136,8 @@ export class FormProjectComponent implements OnInit, OnDestroy {
         type: 'time',
         splitLine: {
           show: false
-        }
+        },
+        data: xAxis
       },
       yAxis: {
         type: 'value',
@@ -134,24 +146,28 @@ export class FormProjectComponent implements OnInit, OnDestroy {
           show: false
         }
       },
-      series: [{
-        name: 'Mocking Data',
-        type: 'line',
-        showSymbol: false,
-        hoverAnimation: false,
-        data: data
-      }]
-    });
+      series: series
+    };
   }
 
-
-  createProject(): void {
-    this.projectService.newProject(this.projectFrom, this.csvFile).subscribe(arg => {
-      this.toast.info('Proyecto creado');
-    }, error => {
-      this.toast.error('Se ha producido un error al crear un nuevo proyecto');
-      throw error;
-    });
+  createUpdateProject(): void {
+    if(!this.projectFrom.id){
+      // Tiene ID => Creación
+      this.projectService.createProject(this.projectFrom).subscribe(arg => {
+        this.toast.info('Proyecto creado correctamente');
+      }, error => {
+        this.toast.error('Se ha producido un error al crear un nuevo proyecto');
+        throw error;
+      });
+    } else {
+      // No tiene ID => Edición
+      this.projectService.updateProject(this.projectFrom, this.csvFile).subscribe(arg => {
+        this.toast.info('Proyecto editado correctamente');
+      }, error => {
+        this.toast.error('Se ha producido un error al crear un nuevo proyecto');
+        throw error;
+      });
+    }
   }
 
   cancelProject(): void {
@@ -196,6 +212,10 @@ export class FormProjectComponent implements OnInit, OnDestroy {
       this.toast.error('Error en la subida del fichero');
       throw error;
     });
+  }
+
+  openMapModal(): void{
+    $(this.mapModal.nativeElement).modal('show');
   }
 
 }
