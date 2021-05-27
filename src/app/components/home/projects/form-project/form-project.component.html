@@ -93,6 +93,18 @@
 
     <hr>
 
+    <div>
+      <rating [max]="10" [(ngModel)]="projectFrom.rating" [customTemplate]="tt"></rating>
+      <div class="card">
+        <pre class="card-block card-header" style="margin:15px 0;"> <b>(<i>Rate:</i> {{projectFrom.rating}})</b> </pre>
+      </div>
+      <ng-template #tt let-i="index" let-v="value">
+        <button class="btn btn-{{i < v ? 'warning' : 'default'}}">
+          {{i < v ? '&#9733;' : '&#9734;'}}
+        </button>
+      </ng-template>
+    </div>
+
     <div class="row">
         <button type="submit" class="btn btn-secondary" (click)="cancelProject()">Cancelar</button>
         <button type="submit" class="btn btn-primary offset-1" (click)="createUpdateProject()">Guardar</button>
