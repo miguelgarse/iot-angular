@@ -43,8 +43,8 @@ export class SensorsComponent implements OnInit {
     let config = {
       ignoreBackdropClick: true,
       initialState: {
-        title: 'Borrar tipo de sensor',
-        message: '¿Desea realizar borrar el tipo de sensor ' + sensorType.code + '?'
+        title: 'Borrar Tipo de Sensor',
+        message: '¿Desea borrar el Tipo de Sensor ' + sensorType.code + '?'
       }
     };
 
