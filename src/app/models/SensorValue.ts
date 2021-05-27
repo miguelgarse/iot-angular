@@ -3,7 +3,7 @@ import { User } from './User';
 
 export class SensorValue {
     id!: string;
-    valor!: number;
+    value!: number;
     timestamp!: Date;
     createdUser!: User;
     lastModifieduser!: User;

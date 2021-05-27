@@ -16,8 +16,6 @@ export class FooterComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event']) // for window scroll events
   onScroll($event: Event) {
-    console.info("Vertical: " + this.verticalOffset);
-
     this.verticalOffset = window.pageYOffset 
           || document.documentElement.scrollTop 
           || document.body.scrollTop || 0;

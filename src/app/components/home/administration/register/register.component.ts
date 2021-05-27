@@ -108,6 +108,7 @@ export class RegisterComponent implements OnInit {
   editUser(userId: number): void{
     this.usersService.getUserById(userId).subscribe((user: User) => {
       this.user = user;
+      this.getUserList();
     }, error => {
       this.toastr.success("Error al recuperar los datos del usuario");
       throw error;

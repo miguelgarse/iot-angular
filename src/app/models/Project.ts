@@ -10,6 +10,7 @@ export class Project {
     sensors!: Sensor[];
     latitude!: number;
     longitude!: number;
+    rating!: number;
     createdUser!: User;
     lastModifieduser!: User;
     dateCreated!: Date;

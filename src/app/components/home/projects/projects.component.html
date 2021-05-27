@@ -3,7 +3,7 @@
 
     <h1 class="display-4">Proyectos</h1>
 
-    <a type="button" class="btn-floating light-blue create-buttom" (click)="redirectFormProject()" title="Crear nuevo proyecto">
+    <a type="button" class="btn-floating light-blue create-buttom" (click)="formProject()" title="Crear nuevo proyecto">
         <i class="bi bi-plus-square"></i> Crear Proyecto
     </a>
 
@@ -43,7 +43,7 @@
     </div>
 
     
-    <div class="main-container card-body custom-card-body">
+    <div class="main-container card-body custom-card-body" style="padding-bottom: 50px">
         <h5 class="card-title text-center">Tabla de Proyectos</h5>
 
         <table class="table table-striped">
@@ -65,15 +65,22 @@
                     <td>{{project.keywords}}</td>
                     <td>{{project.latitude}}, {{project.longitude}}</td>
                     <td>
-                        <a role="button" class="btn btn-outline-dark" (click)="redirectFormProject(project.id)"><i class="bi bi-pencil"></i></a>
+                        <div class="row justify-content-around">
+                            <a class="btn btn-outline-dark" role="button" (click)="formProject(project)">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a class="btn btn-outline-dark" role="button" (click)="deleteProject(project)">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div style="padding-bottom: 50px">
-        <app-leaflet-map [projectList]="projectList" ></app-leaflet-map>
+    <div style="padding-bottom: 50px" *ngIf="false">
+        <app-leaflet-map [projectList]="projectList"></app-leaflet-map>
     </div>
     
 </div>
