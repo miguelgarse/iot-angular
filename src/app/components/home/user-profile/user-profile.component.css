@@ -59,3 +59,15 @@ body{
 .shadow-none {
     box-shadow: none!important;
 }
+
+.profile-image:hover{
+    box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+    -webkit-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+    -moz-box-shadow: 5px 10px 24px 4px rgba(0,0,0,0.43);
+    cursor: pointer;
+}
+
+.like-button:hover{
+    font-weight: bold;
+    cursor: pointer;
+}

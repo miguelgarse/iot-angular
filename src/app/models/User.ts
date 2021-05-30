@@ -1,3 +1,4 @@
+import { Byte } from '@angular/compiler/src/util';
 import { Role } from 'src/app/models/Role';
 
 export class User {
@@ -10,6 +11,9 @@ export class User {
     roles!: Role[];
     createdUser!: User;
 	dateCreated!: Date;
+    githubAccount!: string;
+	tokenApi!: string;
+	profileImage!: Byte[];
     
     constructor(){ }
 

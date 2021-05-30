@@ -25,22 +25,37 @@ export class UsersService {
   }
 
   public registerUser(user: User): Observable<any> {
-    return this.http.post<any>(this.apiEndpoint + "/api/admin/createUser", user, 
+    return this.http.post<any>(this.apiEndpoint + "/api/user/createUser", user, 
     { 
       observe: 'response' 
     });
   }
 
   public getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiEndpoint + "/api/admin");
+    return this.http.get<User[]>(this.apiEndpoint + "/api/user");
   }
 
   public getUserById(userId: number): Observable<User> {
-    return this.http.get<User>(this.apiEndpoint + "/api/admin/" + userId);
+    return this.http.get<User>(this.apiEndpoint + "/api/user/" + userId);
   }
 
   public deleteUserById(userId: number): Observable<User> {
-    return this.http.delete<User>(this.apiEndpoint + "/api/admin/" + userId);
+    return this.http.delete<User>(this.apiEndpoint + "/api/user/" + userId);
+  }
+
+  public getCurrentUser(): Observable<User> {
+    return this.http.get<User>(this.apiEndpoint + "/api/user/getCurrentUser" );
+  }
+
+  public generateTokenApi(): Observable<User> {
+    return this.http.get<User>(this.apiEndpoint + "/api/user/generateTokenApi" );
+  }
+
+  public updateUserImage(image: string): Observable<User> {
+    const formData = new FormData();
+    formData.append('image', image);
+
+    return this.http.put<User>(this.apiEndpoint + "/api/user/updateUserImage", formData);
   }
 
 }
