@@ -25,6 +25,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { ConfirmDialogComponent } from './components/home/common/confirm-dialog/confirm-dialog.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import { NewImageDialogComponent } from './components/home/user-profile/new-image-dialog/new-image-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     FooterComponent,
     SensorsComponent,
     UserProfileComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    NewImageDialogComponent
   ],
   imports: [
     BrowserModule,
