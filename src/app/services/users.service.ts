@@ -21,14 +21,11 @@ export class UsersService {
   }
 
   public checkUsername(username: string): Observable<any> {
-    return this.http.get<any>(this.apiEndpoint + "/" + username, { observe: 'response' } );
+    return this.http.get<any>(this.apiEndpoint + "/" + username);
   }
 
   public registerUser(user: User): Observable<any> {
-    return this.http.post<any>(this.apiEndpoint + "/api/user/createUser", user, 
-    { 
-      observe: 'response' 
-    });
+    return this.http.post<User>(this.apiEndpoint + "/api/user/createUser", user);
   }
 
   public getAllUsers(): Observable<User[]> {

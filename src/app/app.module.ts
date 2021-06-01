@@ -26,6 +26,7 @@ import { ConfirmDialogComponent } from './components/home/common/confirm-dialog/
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { NewImageDialogComponent } from './components/home/user-profile/new-image-dialog/new-image-dialog.component';
+import { UserDataDialogComponent } from './components/home/administration/register/user-data-dialog/user-data-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { NewImageDialogComponent } from './components/home/user-profile/new-imag
     SensorsComponent,
     UserProfileComponent,
     ConfirmDialogComponent,
-    NewImageDialogComponent
+    NewImageDialogComponent,
+    UserDataDialogComponent
   ],
   imports: [
     BrowserModule,
