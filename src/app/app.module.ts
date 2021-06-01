@@ -27,6 +27,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { NewImageDialogComponent } from './components/home/user-profile/new-image-dialog/new-image-dialog.component';
 import { UserDataDialogComponent } from './components/home/administration/register/user-data-dialog/user-data-dialog.component';
+import { ChangePasswordDialogComponent } from './components/login/change-password-dialog/change-password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { UserDataDialogComponent } from './components/home/administration/regist
     UserProfileComponent,
     ConfirmDialogComponent,
     NewImageDialogComponent,
-    UserDataDialogComponent
+    UserDataDialogComponent,
+    ChangePasswordDialogComponent
   ],
   imports: [
     BrowserModule,

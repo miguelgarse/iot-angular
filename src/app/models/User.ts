@@ -13,8 +13,9 @@ export class User {
 	dateCreated!: Date;
     githubAccount!: string;
 	tokenApi!: string;
-	profileImage!: Byte[];
-    
+	profileImage!: string;
+    dateLastLogin!: Date;
+
     constructor(){ }
 
     public isAdmin(): boolean{

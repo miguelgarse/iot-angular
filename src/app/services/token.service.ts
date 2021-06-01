@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 const TOKEN_KEY = 'AuthToken';
 const USERNAME_KEY = 'AuthUserName';
 const AUTHORTIES_KEY = 'AuthAuthorities';
+const DATE_LAST_LOGIN_KEY = 'AuthDateLastLogin';
 
 @Injectable({
     providedIn: 'root'
@@ -35,6 +36,17 @@ export class TokenService {
     public setAuthorities(authorities: string[]): void {
         window.sessionStorage.removeItem(AUTHORTIES_KEY);
         window.sessionStorage.setItem(AUTHORTIES_KEY, JSON.stringify(authorities));
+    }
+
+    public setDateLastLogin(dateLastLogin: number): void {
+        window.sessionStorage.removeItem(DATE_LAST_LOGIN_KEY);
+        window.sessionStorage.setItem(DATE_LAST_LOGIN_KEY, dateLastLogin.toString());
+    }
+
+    public getDateLastLogin(): Date {
+        const dateLastLogin = window.sessionStorage.getItem(DATE_LAST_LOGIN_KEY);
+        let miliseconds: number = dateLastLogin?Number(dateLastLogin):0;
+        return new Date(miliseconds);
     }
 
     public getAuthorities(): string[] {

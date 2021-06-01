@@ -55,4 +55,11 @@ export class UsersService {
     return this.http.put<User>(this.apiEndpoint + "/api/user/updateUserImage", formData);
   }
 
+  public updatePassword(password: string): Observable<User> {
+    const formData = new FormData();
+    formData.append('password', password);
+
+    return this.http.put<User>(this.apiEndpoint + "/api/user/updatePassword", formData);
+  }
+
 }
