@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/User';
 import { UsersService } from 'src/app/services/users.service';
-import { HttpStatusCodes } from 'src/app/utils/http-status-codes';
+import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
+import { UserDataDialogComponent } from './user-data-dialog/user-data-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -12,85 +13,39 @@ import { HttpStatusCodes } from 'src/app/utils/http-status-codes';
 })
 export class RegisterComponent implements OnInit {
 
-  public user: User = new User();
-  public repeatedPassword: string = "";
   public usersList: User[] = [];
 
-  public showPassword: boolean = true;
-
   constructor(private usersService: UsersService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private modalService: BsModalService) { }
 
   ngOnInit() {
     this.getUserList();
   }
 
-  public register(): void {
-    if(!this.existsUsername()){
-      if (this.user.username && this.user.username.length > 0
-        && this.user.email && this.user.email.length > 0
-        && this.user.password && this.user.password.length > 0) {
-  
-        this.usersService.registerUser(this.user).subscribe(response => {
-  
-          switch (response.status) {
-            case HttpStatusCodes.CREATED:
-              console.log("Usuario creado correctamente: " + this.user.username);
-              this.toastr.success("Usuario registrado correctamente: " + this.user.username);
-              this.getUserList(); // Refrescar tabla de usuarios
-              break;
-          }
-  
+  public createUser(): void {
+    let bsModalRef!: BsModalRef;
+
+    let config = {
+      ignoreBackdropClick: true,
+      class: 'modal-xl',
+      initialState: {
+        title: 'Crear nuevo usuario'
+      }
+    };
+
+    bsModalRef = this.modalService.show(UserDataDialogComponent, config);
+
+    bsModalRef.content.action.subscribe((user: User) => {
+      if (user) {
+        this.usersService.registerUser(user).subscribe(response => {
+          this.toastr.success("Usuario registrado correctamente: " + user.username);
+          this.getUserList(); // Refrescar tabla de usuarios
         }, (error: any) => {
-          switch (error.status) {
-            case HttpStatusCodes.BAD_REQUEST:
-              this.toastr.error("No se ha enviado el usuario, el correo o la contraseña");
-              break;
-            case HttpStatusCodes.CONFLICT:
-              this.toastr.error("Nombre de usuario duplicado");
-              break;
-            case HttpStatusCodes.INTERNAL_SERVER_ERROR:
-              this.toastr.error("Error interno del servidor");
-              break;
-          }
+         throw error;
         });
-      } else {
-        if (!this.user.username || this.user.username.length < 1) {
-          this.toastr.error("Debe introducir un usuario");
-        }
-        if (!this.user.email || this.user.email.length < 1) {
-          this.toastr.error("Debe introducir un correo");
-        }
-        if (!this.user.password || this.user.password.length < 1) {
-          this.toastr.error("Debe introducir una contraseña");
-        }
-      }
-    }
-  }
-
-  /**
-   * Permite comporbar si un nombre de usuario ya existe en la base de datos.
-   */
-  public existsUsername(): boolean {
-    let exists: boolean = false;
-
-    this.usersService.checkUsername(this.user.username).subscribe(response => {
-      if (response.status == HttpStatusCodes.OK) { // Usuario ya existe
-        console.log("Usuario ya existe");
-        this.toastr.warning("El usuario " + this.user.username + " ya existe");
-        exists = true;
-      }
-    }, (error: any) => {
-      if (error.status == HttpStatusCodes.NOT_FOUND) { // Usuario no existe
-        console.log("Usuario no existe");
-        this.toastr.info("El usuario " + this.user.username + " está disponible");
-      } else if (error.status == HttpStatusCodes.INTERNAL_SERVER_ERROR) {
-        console.log("Error en el servidor");
-        this.toastr.error("Error al comporbar existencia del usuario " + this.user.username);
       }
     });
-
-    return exists;
   }
 
   public getUserList(): void {
@@ -101,13 +56,32 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  public changeShowPassword(): void{
-    this.showPassword = !this.showPassword;
-  }
+  public editUser(user: User): void{
+    let bsModalRef!: BsModalRef;
 
-  editUser(userId: number): void{
-    this.usersService.getUserById(userId).subscribe((user: User) => {
-      this.user = user;
+    this.usersService.getUserById(user.id).subscribe((user: User) => {
+      let config = {
+        ignoreBackdropClick: true,
+        class: 'modal-xl',
+        initialState: {
+          title: 'Editar usuario ' + user.username,
+          user: user
+        }
+      };
+  
+      bsModalRef = this.modalService.show(UserDataDialogComponent, config);
+  
+      bsModalRef.content.action.subscribe((user: User) => {
+        if (user) {
+          this.usersService.registerUser(user).subscribe(response => {
+            this.toastr.success("Usuario actualizado correctamente: " + user.username);
+            this.getUserList(); // Refrescar tabla de usuarios
+          }, (error: any) => {
+           throw error;
+          });
+        }
+      });
+
       this.getUserList();
     }, error => {
       this.toastr.success("Error al recuperar los datos del usuario");
@@ -115,14 +89,30 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  deleteUser(userId: number): void{
-    this.usersService.deleteUserById(userId).subscribe((user: User) => {
-      if(user && user.id){
-        this.toastr.success("El usuario " + user.username + " ha sido borrado");
-        this.getUserList();
+  public deleteUser(user: User): void{
+    let bsModalRef!: BsModalRef;
+
+    let config = {
+      ignoreBackdropClick: true,
+      initialState: {
+        title: 'Borrar usuario',
+        message: '¿Desea borrar el usuario ' + user.username + '?'
       }
-    }, error => {
-      throw error;
+    };
+
+    bsModalRef = this.modalService.show(ConfirmDialogComponent, config);
+
+    bsModalRef.content.action.subscribe((value: any) => {
+      if (value) {
+        this.usersService.deleteUserById(user.id).subscribe((user: User) => {
+          if(user && user.id){
+            this.toastr.success("El usuario " + user.username + " ha sido borrado");
+            this.getUserList();
+          }
+        }, error => {
+          throw error;
+        });
+      }
     });
   }
 

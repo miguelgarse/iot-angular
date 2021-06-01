@@ -25,6 +25,9 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { ConfirmDialogComponent } from './components/home/common/confirm-dialog/confirm-dialog.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import { NewImageDialogComponent } from './components/home/user-profile/new-image-dialog/new-image-dialog.component';
+import { UserDataDialogComponent } from './components/home/administration/register/user-data-dialog/user-data-dialog.component';
+import { ChangePasswordDialogComponent } from './components/login/change-password-dialog/change-password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,10 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     FooterComponent,
     SensorsComponent,
     UserProfileComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    NewImageDialogComponent,
+    UserDataDialogComponent,
+    ChangePasswordDialogComponent
   ],
   imports: [
     BrowserModule,

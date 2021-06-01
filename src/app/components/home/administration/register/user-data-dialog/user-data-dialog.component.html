@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="d-flex flex-column align-items-center text-center" *ngIf="user.id">
+        <img [src]="imgURL" alt="Imagen de perfil" class="rounded-circle" width="150" title="Cargar nueva imagen">
+    </div>
+
+    <form autocomplete="off" #registerForm="ngForm" id="registerForm">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="user-name">Nombre</label>
+                <input type="text" class="form-control" id="user-name" autocomplete="off"
+                    name="user-name" [(ngModel)]="user.name" maxlength="64" required>
+            </div>
+            <div class="form-group col-md-8">
+                <label for="lastname">Apellidos</label>
+                <input type="text" class="form-control" id="lastname" autocomplete="off"
+                    name="lastname" [(ngModel)]="user.lastname" maxlength="64" required (blur)="autocompleteFields()">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="username">Nombre de usuario</label>
+                <input type="text" class="form-control" id="username" autocomplete="off"
+                    name="username" [(ngModel)]="user.username" maxlength="64" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputRegisterEmail">Correo</label>
+                <input type="email" class="form-control" id="inputRegisterEmail" autocomplete="off"
+                    name="inputRegisterEmail" [(ngModel)]="user.email" maxlength="512" required>  
+            </div>
+
+            <!-- ROLE -->
+            <div class="form-group col-md-12">
+                <label for="inputRoles">Roles</label>
+                <select class="custom-select" multiple id="inputRoles" name="inputRoles" [(ngModel)]="user.roles">
+                    <option value="user" selected>Usuario</option>
+                    <option value="admin">Administrador</option>
+                </select>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group col-md-4">
+                <label for="inputPassword">Contraseña</label>
+                <input class="form-control" id="inputPassword" autocomplete="off" name="inputPassword" [(ngModel)]="user.password" maxlength="512" required>
+            </div>
+            <span class="col-md-8"></span>
+        </div>
+
+        <hr *ngIf="user.id">
+
+        <div class="form-row" *ngIf="user.id">
+            <div class="form-group col-md-4">
+                <label for="inputRegisterUser">Fecha de creación</label>
+                <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.dateCreated | date: 'dd/MM/yyyy'">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputRegisterUser">Creador</label>
+                <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.createdUser?user.createdUser.username:''">
+            </div>
+            <span class="col-md-2"></span>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="confirm()">Acceptar</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">Cancelar</button>
+</div>
