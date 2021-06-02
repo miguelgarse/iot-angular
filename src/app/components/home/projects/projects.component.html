@@ -42,8 +42,7 @@
         </form>
     </div>
 
-    
-    <div class="main-container card-body custom-card-body" style="padding-bottom: 50px">
+    <div class="main-container card-body custom-card-body" style="margin-bottom: 90px">
         <h5 class="card-title text-center">Tabla de Proyectos</h5>
 
         <table class="table table-striped">
@@ -53,7 +52,6 @@
                     <th scope="col">Nombre del proyecto</th>
                     <th scope="col">Descripción</th>
                     <th scope="col">Palabras clave</th>
-                    <th scope="col">Ubicación</th>
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
@@ -63,13 +61,12 @@
                     <td>{{project.title}}</td>
                     <td>{{project.description}}</td>
                     <td>{{project.keywords}}</td>
-                    <td>{{project.latitude}}, {{project.longitude}}</td>
                     <td>
                         <div class="row justify-content-around">
-                            <a class="btn btn-outline-dark" role="button" (click)="formProject(project)">
-                                <i class="bi bi-pencil"></i>
+                            <a class="btn btn-outline-dark" role="button" (click)="formProject(project)" title="Acceder al formulario">
+                                <i class="bi bi-file-earmark-bar-graph"></i>
                             </a>
-                            <a class="btn btn-outline-dark" role="button" (click)="deleteProject(project)">
+                            <a class="btn btn-outline-dark" role="button" (click)="deleteProject(project)" *ngIf="tokenService.isAdmin()" title="Borrar el proyecto">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </div>
@@ -77,10 +74,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-
-    <div style="padding-bottom: 50px" *ngIf="false">
-        <app-leaflet-map [projectList]="projectList"></app-leaflet-map>
     </div>
     
 </div>
