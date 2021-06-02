@@ -1,16 +1,14 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/models/Project';
 import { Sensor } from 'src/app/models/Sensor';
 import { SensorType } from 'src/app/models/SensorType';
-import { SensorValue } from 'src/app/models/SensorValue';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { TokenService } from 'src/app/services/token.service';
-
-// jQuery Sign $
-declare let $: any;
+import { MapDialogComponent } from './map-dialog/map-dialog.component';
 
 @Component({
   selector: 'app-form-project',
@@ -33,13 +31,12 @@ export class FormProjectComponent implements OnInit {
 
   public graphsOptions: any;
   
-  @ViewChild('mapModal') mapModal!: ElementRef;
-
   constructor(private projectService: ProjectsService,
     private sensorService: SensorService,
     private tokenService: TokenService,
     private toast: ToastrService,
-    private router: Router) {
+    private router: Router,
+    private modalService: BsModalService) {
 
     let currentNavigation: any = this.router.getCurrentNavigation();
 
@@ -195,7 +192,7 @@ export class FormProjectComponent implements OnInit {
     return sensorTypeResult;
   }
 
-  fileChange(event: any) {
+  public fileChange(event: any) {
     if(event.target.files != null && event.target.files.length > 0){
       let fileSize: number = event.target.files[0].size;
 
@@ -205,7 +202,7 @@ export class FormProjectComponent implements OnInit {
     }
   }
 
-  uploadFiles(): void {
+  public uploadFiles(): void {
     this.projectService.uploadFiles(this.csvFile).subscribe(response => {
 
     }, error => {
@@ -214,8 +211,24 @@ export class FormProjectComponent implements OnInit {
     });
   }
 
-  openMapModal(): void{
-    $(this.mapModal.nativeElement).modal('show');
+  public openMapModal(): void{
+    let bsModalRef!: BsModalRef;
+
+    let config = {
+      ignoreBackdropClick: true,
+      class: 'modal-lg',
+      initialState: {
+        title: 'Ubicación del Proyecto'
+      }
+    };
+
+    bsModalRef = this.modalService.show(MapDialogComponent, config);
+
+    bsModalRef.content.action.subscribe((value: any) => {
+      if (value) {
+        
+      }
+    });
   }
 
 }
