@@ -7,41 +7,6 @@
         <i class="bi bi-plus-square"></i> Crear Proyecto
     </a>
 
-    <div class="main-container card-body custom-card-body">
-        <h5>Filtrar proyectos</h5>
-
-        <form>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="project-name">Nombre del proyecto</label>
-                    <input type="text" class="form-control" id="project-name" aria-describedby="project-name"
-                        placeholder="Proyecto">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="project-name">Palabras clave</label>
-                    <input type="text" class="form-control" id="project-name" aria-describedby="project-name"
-                        placeholder="Proyecto">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="exampleInputPassword1">Participantes</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Participantes">
-                </div>
-                <div class="row form-group col-md-6 align-items-center">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck">
-                        <label class="form-check-label" for="gridCheck">
-                          Solo mis proyectos
-                        </label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="d-flex align-items-end flex-column">
-                <button type="submit" class="btn btn-primary">Buscar</button>
-            </div>
-        </form>
-    </div>
-
     <div class="main-container card-body custom-card-body" style="margin-bottom: 90px">
         <h5 class="card-title text-center">Tabla de Proyectos</h5>
 
@@ -63,7 +28,7 @@
                     <td>{{project.keywords}}</td>
                     <td>
                         <div class="row justify-content-around">
-                            <a class="btn btn-outline-dark" role="button" (click)="formProject(project)" title="Acceder al formulario">
+                            <a class="btn btn-outline-dark" role="button" (click)="formProject(project)" title="Acceder al proyecto">
                                 <i class="bi bi-file-earmark-bar-graph"></i>
                             </a>
                             <a class="btn btn-outline-dark" role="button" (click)="deleteProject(project)" *ngIf="tokenService.isAdmin()" title="Borrar el proyecto">
