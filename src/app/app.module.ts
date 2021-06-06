@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/home/common/navbar/navbar.component';
 import { RegisterComponent } from './components/home/administration/register/register.component';
-import { LeafletMapComponent } from './components/home/common/leaflet-map/leaflet-map.component';
 import { FormProjectComponent } from './components/home/projects/form-project/form-project.component';
 import { ProjectsComponent } from './components/home/projects/projects.component';
 import { LoginComponent } from './components/login/login.component';
@@ -28,7 +27,6 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { NewImageDialogComponent } from './components/home/user-profile/new-image-dialog/new-image-dialog.component';
 import { UserDataDialogComponent } from './components/home/administration/register/user-data-dialog/user-data-dialog.component';
 import { ChangePasswordDialogComponent } from './components/login/change-password-dialog/change-password-dialog.component';
-import { MapDialogComponent } from './components/home/projects/form-project/map-dialog/map-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +37,6 @@ import { MapDialogComponent } from './components/home/projects/form-project/map-
     RegisterComponent,
     ProjectsComponent,
     FormProjectComponent,
-    LeafletMapComponent,
     FooterComponent,
     SensorsComponent,
     UserProfileComponent,
@@ -47,7 +44,6 @@ import { MapDialogComponent } from './components/home/projects/form-project/map-
     NewImageDialogComponent,
     UserDataDialogComponent,
     ChangePasswordDialogComponent,
-    MapDialogComponent
   ],
   imports: [
     BrowserModule,
