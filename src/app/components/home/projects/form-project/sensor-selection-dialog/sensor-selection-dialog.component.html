@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form autocomplete="off">
+        <!-- Name -->
+        <div class="form-group">
+            <label for="title">Nombre del sensor</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Título" [(ngModel)]="sensor.name" >
+          </div>
+      
+          <!-- Type -->
+          <div class="form-group">
+            <label for="description">Tipo de sensor</label>
+            <select class="custom-select" id="sensorType" name="sensorType" [(ngModel)]="sensor.sensorTypeId">
+              <option value="0"selected>Selecciona un tipo de sensor</option>
+              <option [value]="sensorType.id" *ngFor="let sensorType of sensorTypesMasterTable" [title]="sensorType.description">{{sensorType.code}}</option>
+            </select>
+          </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="confirm()">Acceptar</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">Cancelar</button>
+</div>

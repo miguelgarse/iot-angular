@@ -113,51 +113,5 @@
     
   </form>
 
-  
-  
-
-
-
-
-
-  <div class="modal fade" id="sensorModal" tabindex="-1" role="dialog" aria-labelledby="sensorModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="sensorModalLabel">Añadir sensor</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-              <form>
-                <!-- Name -->
-                <div class="form-group">
-                  <label for="title">Nombre del sensor</label>
-                  <input type="text" class="form-control" id="title" name="title" placeholder="Título" [(ngModel)]="auxSensor.name" >
-                </div>
-            
-                <!-- Type -->
-                <div class="form-group">
-                  <label for="description">Tipo de sensor</label>
-                  <select class="custom-select" id="sensorType" name="sensorType" [(ngModel)]="auxSensor.sensorTypeId">
-                    <option value="0"selected>Selecciona un tipo de sensor</option>
-                    <option [value]="sensorType.id" *ngFor="let sensorType of sensorTypesMasterTable" [title]="sensorType.description">{{sensorType.code}}</option>
-                  </select>
-                </div>
-              </form>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addSensor()">Añadir</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-
-        </div>
-    </div>
-  </div>
-
-
 </div>
 

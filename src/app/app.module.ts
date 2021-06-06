@@ -27,6 +27,7 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { NewImageDialogComponent } from './components/home/user-profile/new-image-dialog/new-image-dialog.component';
 import { UserDataDialogComponent } from './components/home/administration/register/user-data-dialog/user-data-dialog.component';
 import { ChangePasswordDialogComponent } from './components/login/change-password-dialog/change-password-dialog.component';
+import { SensorSelectionDialogComponent } from './components/home/projects/form-project/sensor-selection-dialog/sensor-selection-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ChangePasswordDialogComponent } from './components/login/change-passwor
     NewImageDialogComponent,
     UserDataDialogComponent,
     ChangePasswordDialogComponent,
+    SensorSelectionDialogComponent
   ],
   imports: [
     BrowserModule,

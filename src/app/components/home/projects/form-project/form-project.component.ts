@@ -8,7 +8,7 @@ import { SensorType } from 'src/app/models/SensorType';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { TokenService } from 'src/app/services/token.service';
-import { MapDialogComponent } from './map-dialog/map-dialog.component';
+import { SensorSelectionDialogComponent } from './sensor-selection-dialog/sensor-selection-dialog.component';
 
 @Component({
   selector: 'app-form-project',
@@ -25,8 +25,6 @@ export class FormProjectComponent implements OnInit {
   public projectFrom: Project = new Project();
   public sensorTypesMasterTable: SensorType[] = [];
 
-  public auxSensor: Sensor = new Sensor();
-  
   public csvFile!: File;
 
   public graphsOptions: any;
@@ -171,15 +169,6 @@ export class FormProjectComponent implements OnInit {
     this.router.navigate(['home'], { skipLocationChange: true });
   }
 
-  addSensor(): void{
-    if(!this.projectFrom.sensors){
-      this.projectFrom.sensors = [];
-    }
-    
-    this.projectFrom.sensors.push(this.auxSensor);
-    this.auxSensor = new Sensor();
-  }
-
   getSensorTypeById(sensorTypeId: number): SensorType {
     let sensorTypeResult: SensorType = new SensorType();
 
@@ -211,18 +200,20 @@ export class FormProjectComponent implements OnInit {
     });
   }
 
-  public openMapModal(): void{
+  public openSensorModal(): void{
     let bsModalRef!: BsModalRef;
 
     let config = {
       ignoreBackdropClick: true,
       class: 'modal-lg',
       initialState: {
-        title: 'Ubicación del Proyecto'
+        title: 'Añadir un sensor',
+        sensor: new Sensor(),
+        sensorTypesMasterTable: this.sensorTypesMasterTable
       }
     };
 
-    bsModalRef = this.modalService.show(MapDialogComponent, config);
+    bsModalRef = this.modalService.show(SensorSelectionDialogComponent, config);
 
     bsModalRef.content.action.subscribe((value: any) => {
       if (value) {
