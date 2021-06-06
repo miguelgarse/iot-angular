@@ -2,54 +2,76 @@
 
 <div class="background-image">
 
-  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body custom-card-body">
+  <h1 class="display-4">Creación de Proyecto</h1>
+
+  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body custom-card-body" (keydown.enter)="$event.preventDefault()">
    
     <!-- Title -->
     <div class="form-group">
       <label for="title">Título</label>
-      <input type="text" class="form-control" id="title" name="title" placeholder="Título" [(ngModel)]="projectFrom.title" >
+      <input type="text" class="form-control" id="title" name="title" placeholder="Título" maxlength="64" [(ngModel)]="projectFrom.title">
+      <small class="form-text text-muted text-right">{{projectFrom.title.length}}/64</small>
     </div>
 
     <!-- Description -->
     <div class="form-group">
       <label for="description">Descripción</label>
-      <textarea type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="projectFrom.description"></textarea>
+      <textarea type="text" class="form-control" id="description" name="description" placeholder="Descripción" maxlength="2000" [(ngModel)]="projectFrom.description"></textarea>
+      <small class="form-text text-muted text-right">{{projectFrom.description.length}}/2000</small>
     </div>
 
     <!-- Keywords -->
     <div class="form-group">
       <label for="keywords">Palabras clave</label>
-      <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Meteorología; Temperatura; Madrid; Parque del Retiro"
-      [(ngModel)]="projectFrom.keywords">
+      <input type="text" class="form-control" id="keywords" name="keywords" (keyup.enter)="addKeyword()" [(ngModel)]="keywordInput" *ngIf="!isFormDisabled()">
+      <div class="row col-xs-3 col-sm-7 col-md-9 col-lg-10">
+        <div class="chip" *ngFor="let keyword of projectFrom.keywords">{{keyword}} <i class="bi bi-x" style="cursor: pointer" (click)="deleteKeyword(keyword)"></i></div>
+      </div>
     </div>
 
     <!-- Dirección -->
     <div class="form-group">
-      <label for="userGroup">Dirección del proyecto</label>
-      <input type="text" class="form-control" id="userGroup" name="userGroup" 
+      <label for="address">Dirección del proyecto</label>
+      <input type="text" class="form-control" id="address" name="address" 
              placeholder="Calle de Alan Turing, s/n, 28031, Madrid" [(ngModel)]="projectFrom.location">
     </div>
 
-    <!-- Coordenadas -->
-    <div class="form-row">
-      <div class="form-group col-8">
-        <label for="userGroup">Coordenadas</label>
+    <!-- URL Thingsboard -->
+    <div class="form-group">
+      <label for="urlThingsboard">URL de Thingsboard</label>
+      <input type="text" class="form-control" id="urlThingsboard" name="urlThingsboard" placeholder="http://iot.etsisi.upm.es/dashboard/" [(ngModel)]="projectFrom.urlThingsboard">
+    </div>
+
+    <div class="form-row" *ngIf="isEdition">
+      <!-- Creador -->
+      <div class="form-group col-md-4">
+        <label for="createdUser">Creador</label>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="40.3895, -3.6270">
+          <input type="text" class="form-control" id="createdUser" name="createdUser" disabled [value]="projectFrom.createdUser.username">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="mapModalButton" 
-                    title="Ver localizacion en el mapa" (click)="openMapModal()"><i class="bi bi-map"></i></button>
+            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-person-lines-fill"></i></button>
           </div>
         </div>
+      </div>
+
+      <!-- Fecha de creación -->
+      <div class="form-group col-md-4">
+        <label for="dateCreated">Fecha de creación</label>
+        <input type="text" class="form-control" id="dateCreated" name="dateCreated" disabled [value]="projectFrom.dateCreated">
+      </div>
+
+      <!-- Fecha de modificación -->
+      <div class="form-group col-md-4">
+        <label for="dateLastModified">Fecha de modificación</label>
+        <input type="text" class="form-control" id="dateLastModified" name="dateLastModified" disabled [value]="projectFrom.dateLastModified">
       </div>
     </div>
     
 
-    <hr>
+    <hr class="custom-hr">
 
     <div>
-      <a type="button" class="btn-floating light-blue create-buttom" title="Crear nuevo proyecto"
-          data-toggle="modal" data-target="#sensorModal" *ngIf="!isEdition">
+      <a type="button" class="btn-floating light-blue create-buttom" title="Añadir sensor" *ngIf="!isFormDisabled()" (click)="openSensorModal()">
         <i class="bi bi-plus-square"></i> Añadir sensor
       </a>
 
@@ -74,7 +96,7 @@
         </tbody>
       </table>
 
-      <hr>
+      <hr class="custom-hr">
     </div>
     
     <!-- Datos de los sensores -->
@@ -84,7 +106,7 @@
       </div>
       <div class="custom-file">
         <input type="file" accept=".csv" class="custom-file-input" id="uploadCsv" aria-describedby="inputGroupFileAddon01" (change)="fileChange($event)">
-        <label class="custom-file-label" for="uploadCsv">{{csvFile?csvFile.name:"Seleccione un fichero"}}</label>
+        <label class="custom-file-label" for="uploadCsv" lang="es">{{csvFile?csvFile.name:"Seleccione un fichero"}}</label>
         <i class="bi bi-file-earmark-spreadsheet"></i>
       </div>
       
@@ -92,19 +114,7 @@
       <div echarts [options]="graphsOptions" class="demo-chart"  style="width: 100%; min-height: 400px; margin-top: 50px;"></div>
     </div>
 
-    <hr>
-
-    <div>
-      <rating [max]="5" [(ngModel)]="projectFrom.rating" [customTemplate]="tt"></rating>
-      <div class="card">
-        <pre class="card-block card-header" style="margin:15px 0;"> <b>(<i>Rate:</i> {{projectFrom.rating}})</b> </pre>
-      </div>
-      <ng-template #tt let-i="index" let-v="value">
-        <button class="btn btn-{{i < v ? 'warning' : 'default'}}">
-          {{i < v ? '&#9733;' : '&#9734;'}}
-        </button>
-      </ng-template>
-    </div>
+    <hr class="custom-hr">
 
     <div class="row">
         <button type="submit" class="btn btn-secondary" (click)="cancelProject()">Cancelar</button>

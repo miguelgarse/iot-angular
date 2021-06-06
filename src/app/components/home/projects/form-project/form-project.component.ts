@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -18,17 +19,15 @@ import { SensorSelectionDialogComponent } from './sensor-selection-dialog/sensor
 export class FormProjectComponent implements OnInit {
 
   public isEdition: boolean = false;
-  public isReadOnly: boolean = false;
-  public isCurrentUserCreator = false;
+  public isCurrentUserCreator: boolean = false;
 
-  public projectId!: number;
   public projectFrom: Project = new Project();
   public sensorTypesMasterTable: SensorType[] = [];
 
   public csvFile!: File;
-
   public graphsOptions: any;
-  
+  public keywordInput: string = "";
+
   constructor(private projectService: ProjectsService,
     private sensorService: SensorService,
     private tokenService: TokenService,
@@ -39,22 +38,16 @@ export class FormProjectComponent implements OnInit {
     let currentNavigation: any = this.router.getCurrentNavigation();
 
     if (currentNavigation != null && currentNavigation.extras.state.id) {
-      this.projectId = currentNavigation.extras.state.id;
-
       this.isEdition = true;
-    }
-  }
 
-  ngOnInit() {
-    // Get all sensors types
-    this.sensorService.findAllSensorTypes().subscribe((sensorTypes: SensorType[]) => {
-      this.sensorTypesMasterTable = sensorTypes;
-    }, error => {
-      throw error;
-    });
+      // Get all sensors types
+      this.sensorService.findAllSensorTypes().subscribe((sensorTypes: SensorType[]) => {
+        this.sensorTypesMasterTable = sensorTypes;
+      }, error => {
+        throw error;
+      });
 
-    if(this.projectId && this.isEdition){
-      this.projectService.findProjectById(this.projectId).subscribe((project: Project) => {
+      this.projectService.findProjectById(currentNavigation.extras.state.id).subscribe((project: Project) => {
         if(project && project.id){
           this.projectFrom = project;
   
@@ -73,6 +66,14 @@ export class FormProjectComponent implements OnInit {
         throw error;
       });
     }
+  }
+
+  ngOnInit() {
+    
+  }
+
+  isFormDisabled(): boolean {
+    return this.isEdition && !this.isCurrentUserCreator && !this.tokenService.isAdmin();
   }
 
   createGraph(sensors: Sensor[]): void{
@@ -222,4 +223,22 @@ export class FormProjectComponent implements OnInit {
     });
   }
 
+  addKeyword(): void {
+    if(this.keywordInput && this.keywordInput.trim().length > 0){
+      if(this.projectFrom.keywords.includes(this.keywordInput)){
+        this.toast.info("La palabra clave " + this.keywordInput + " ya está añadida");
+      } else{
+        this.projectFrom.keywords.push(this.keywordInput);
+  
+        this.keywordInput = "";
+      }
+    }
+  }
+
+  deleteKeyword(keyword: string): void {
+    const index: number = this.projectFrom.keywords.indexOf(keyword);
+    if (index !== -1) {
+      this.projectFrom.keywords.splice(index, 1);
+    }   
+  }
 }
