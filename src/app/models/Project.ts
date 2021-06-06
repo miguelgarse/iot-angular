@@ -5,19 +5,20 @@ export class Project {
     id!: number;
     title!: string;
     description!: string;
-    keywords!: string;
+    keywords: string[] = [];
     location!: string;
     sensors!: Sensor[];
-    latitude!: number;
-    longitude!: number;
-    rating!: number;
+    urlThingsboard!: string;
     createdUser!: User;
     lastModifieduser!: User;
     dateCreated!: Date;
     dateLastModified!: Date;
 
     constructor() {
-        // Empty constructor
+        this.title = "";
+        this.description = "";
+        this.location = "";
+        this.urlThingsboard = "";
     }
 
 }
