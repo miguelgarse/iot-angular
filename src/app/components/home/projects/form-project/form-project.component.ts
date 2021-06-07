@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -37,21 +36,26 @@ export class FormProjectComponent implements OnInit {
 
     let currentNavigation: any = this.router.getCurrentNavigation();
 
+    // Get all sensors types
+    this.sensorService.findAllSensorTypes().subscribe((sensorTypes: SensorType[]) => {
+      this.sensorTypesMasterTable = sensorTypes;
+    }, error => {
+      throw error;
+    });
+
     if (currentNavigation != null && currentNavigation.extras.state.id) {
       this.isEdition = true;
-
-      // Get all sensors types
-      this.sensorService.findAllSensorTypes().subscribe((sensorTypes: SensorType[]) => {
-        this.sensorTypesMasterTable = sensorTypes;
-      }, error => {
-        throw error;
-      });
 
       this.projectService.findProjectById(currentNavigation.extras.state.id).subscribe((project: Project) => {
         if(project && project.id){
           this.projectFrom = project;
-  
-          this.createGraph(project.sensors);
+
+          if(!this.projectFrom.urlThingsboard)
+            this.projectFrom.urlThingsboard = "";
+
+          if(project.sensors && project.sensors.length > 0){
+            this.createGraph(project.sensors);
+          }
           
           if(project.createdUser.username == this.tokenService.getUserName()){
             this.isCurrentUserCreator = true;
@@ -68,9 +72,7 @@ export class FormProjectComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() { }
 
   isFormDisabled(): boolean {
     return this.isEdition && !this.isCurrentUserCreator && !this.tokenService.isAdmin();
@@ -216,9 +218,12 @@ export class FormProjectComponent implements OnInit {
 
     bsModalRef = this.modalService.show(SensorSelectionDialogComponent, config);
 
-    bsModalRef.content.action.subscribe((value: any) => {
-      if (value) {
-        
+    bsModalRef.content.action.subscribe((sensor: Sensor) => {
+      if (sensor) {
+        if(!this.projectFrom.sensors){
+          this.projectFrom.sensors = [];
+        }
+        this.projectFrom.sensors.push(sensor);
       }
     });
   }

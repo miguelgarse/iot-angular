@@ -23,7 +23,7 @@ import { UserProfileComponent } from './components/home/user-profile/user-profil
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ConfirmDialogComponent } from './components/home/common/confirm-dialog/confirm-dialog.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { RatingModule } from 'ngx-bootstrap/rating';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { NewImageDialogComponent } from './components/home/user-profile/new-image-dialog/new-image-dialog.component';
 import { UserDataDialogComponent } from './components/home/administration/register/user-data-dialog/user-data-dialog.component';
 import { ChangePasswordDialogComponent } from './components/login/change-password-dialog/change-password-dialog.component';
@@ -64,7 +64,7 @@ import { SensorSelectionDialogComponent } from './components/home/projects/form-
       echarts: () => import('echarts')
     }), 
     ModalModule.forRoot(),
-    RatingModule.forRoot()
+    PopoverModule.forRoot()
   ],
   providers: [
     interceptorProvider,

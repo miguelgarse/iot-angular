@@ -2,22 +2,26 @@
 
 <div class="background-image">
 
-  <h1 class="display-4">Creación de Proyecto</h1>
+  <h1 class="display-4" *ngIf="!isEdition">Creación de Proyecto</h1>
+  <h1 class="display-4" *ngIf="!isFormDisabled() && projectFrom.id">Edición de Proyecto</h1>
+  <h1 class="display-4" *ngIf="isFormDisabled()">Visualización de Proyecto</h1>
 
   <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body custom-card-body" (keydown.enter)="$event.preventDefault()">
    
     <!-- Title -->
     <div class="form-group">
       <label for="title">Título</label>
-      <input type="text" class="form-control" id="title" name="title" placeholder="Título" maxlength="64" [(ngModel)]="projectFrom.title">
-      <small class="form-text text-muted text-right">{{projectFrom.title.length}}/64</small>
+      <input type="text" class="form-control" id="title" name="title" placeholder="Título" maxlength="64" 
+             [(ngModel)]="projectFrom.title" [disabled]="isFormDisabled()">
+      <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.title.length}}/64</small>
     </div>
 
     <!-- Description -->
     <div class="form-group">
       <label for="description">Descripción</label>
-      <textarea type="text" class="form-control" id="description" name="description" placeholder="Descripción" maxlength="2000" [(ngModel)]="projectFrom.description"></textarea>
-      <small class="form-text text-muted text-right">{{projectFrom.description.length}}/2000</small>
+      <textarea type="text" class="form-control" id="description" name="description" placeholder="Descripción" maxlength="2000" rows="5"
+                [(ngModel)]="projectFrom.description" [disabled]="isFormDisabled()"></textarea>
+      <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.description.length}}/2000</small>
     </div>
 
     <!-- Keywords -->
@@ -25,31 +29,104 @@
       <label for="keywords">Palabras clave</label>
       <input type="text" class="form-control" id="keywords" name="keywords" (keyup.enter)="addKeyword()" [(ngModel)]="keywordInput" *ngIf="!isFormDisabled()">
       <div class="row col-xs-3 col-sm-7 col-md-9 col-lg-10">
-        <div class="chip" *ngFor="let keyword of projectFrom.keywords">{{keyword}} <i class="bi bi-x" style="cursor: pointer" (click)="deleteKeyword(keyword)"></i></div>
+        <div class="chip" *ngFor="let keyword of projectFrom.keywords">
+          {{keyword}} 
+          <i class="bi bi-x" style="cursor: pointer" (click)="deleteKeyword(keyword)" *ngIf="!isFormDisabled()"></i>
+        </div>
       </div>
     </div>
 
     <!-- Dirección -->
     <div class="form-group">
       <label for="address">Dirección del proyecto</label>
-      <input type="text" class="form-control" id="address" name="address" 
-             placeholder="Calle de Alan Turing, s/n, 28031, Madrid" [(ngModel)]="projectFrom.location">
+      <input type="text" class="form-control" id="address" name="address" placeholder="Calle de Alan Turing, s/n, 28031, Madrid" 
+             [(ngModel)]="projectFrom.location" [disabled]="isFormDisabled()">
+      <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.location.length}}/255</small>
     </div>
 
     <!-- URL Thingsboard -->
     <div class="form-group">
       <label for="urlThingsboard">URL de Thingsboard</label>
-      <input type="text" class="form-control" id="urlThingsboard" name="urlThingsboard" placeholder="http://iot.etsisi.upm.es/dashboard/" [(ngModel)]="projectFrom.urlThingsboard">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="urlThingsboard" name="urlThingsboard" placeholder="http://iot.etsisi.upm.es/dashboard/..." 
+               [(ngModel)]="projectFrom.urlThingsboard" [disabled]="isFormDisabled()">
+        <div class="input-group-append" *ngIf="projectFrom.urlThingsboard">
+          <a role="button" class="btn btn-outline-secondary" [href]="projectFrom.urlThingsboard" target="_blank"><i class="bi bi-link-45deg"></i></a>
+        </div>
+      </div>
+      <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.urlThingsboard.length}}/500</small>
     </div>
+
+    <ng-template #userPopup>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-column align-items-center text-center">
+                <img [src]="projectFrom.createdUser.profileImage?projectFrom.createdUser.profileImage:'../../../../assets/avatar.png'" alt="Imagen de perfil" 
+                     class="rounded-circle" width="100" title="Imagen de perfil">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div>
+                <h6 class="mb-0">Nombre</h6>
+                <div class="text-secondary">
+                  {{projectFrom.createdUser.name}}
+                </div>
+              </div>
+              <hr>
+              <div>
+                <h6 class="mb-0">Apellidos</h6>
+                <div class="text-secondary">
+                  {{projectFrom.createdUser.lastname}}
+                </div>
+              </div>
+              <hr>
+              <div>
+                <h6 class="mb-0">Correo</h6>
+                <div class="text-secondary">
+                  {{projectFrom.createdUser.email}}
+                </div>
+              </div>
+              <hr>
+              <div>
+                <h6 class="mb-0">Cuenta de usuario</h6>
+                <div class="text-secondary">
+                  {{projectFrom.createdUser.username}}
+                </div>
+              </div>
+              <hr>
+              <div>
+                <h6 class="mb-0">Cuenta de Github</h6>
+                <div class="text-secondary">
+                  {{projectFrom.createdUser.githubAccount}} 
+                  <a class="btn" [href]="projectFrom.createdUser.githubAccount" target="_blank" *ngIf="projectFrom.createdUser.githubAccount">
+                    <i class="bi bi-link-45deg"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
     <div class="form-row" *ngIf="isEdition">
       <!-- Creador -->
       <div class="form-group col-md-4">
-        <label for="createdUser">Creador</label>
+        <label for="createdUser">Autor</label>
         <div class="input-group mb-3">
           <input type="text" class="form-control" id="createdUser" name="createdUser" disabled [value]="projectFrom.createdUser.username">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-person-lines-fill"></i></button>
+            <button class="btn btn-outline-secondary" type="button" [popover]="userPopup" popoverTitle="Usuario autor" 
+                    container="body" [outsideClick]="true">
+              <i class="bi bi-person-lines-fill"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -67,15 +144,17 @@
       </div>
     </div>
     
-
     <hr class="custom-hr">
 
     <div>
+
+      <div class="alert alert-warning" role="alert" *ngIf="isEdition && (!projectFrom.sensors || projectFrom.sensors.length == 0)">No se han añadido sensores a este proyecto</div>
+
       <a type="button" class="btn-floating light-blue create-buttom" title="Añadir sensor" *ngIf="!isFormDisabled()" (click)="openSensorModal()">
         <i class="bi bi-plus-square"></i> Añadir sensor
       </a>
 
-      <table class="table table-striped" *ngIf="projectFrom.sensors">
+      <table class="table table-striped" *ngIf="projectFrom.sensors && projectFrom.sensors.length > 0">
         <thead>
             <tr>
                 <th scope="col"></th>
@@ -96,11 +175,12 @@
         </tbody>
       </table>
 
-      <hr class="custom-hr">
+      <hr class="custom-hr" *ngIf="!isFormDisabled()">
+
     </div>
     
     <!-- Datos de los sensores -->
-    <div class="input-group mb-3" *ngIf="isEdition">
+    <div class="input-group mb-3" *ngIf="!isFormDisabled()">
       <div class="input-group-prepend">
         <span class="input-group-text" id="inputGroupFileAddon01">Añadir datos</span>
       </div>
@@ -109,16 +189,16 @@
         <label class="custom-file-label" for="uploadCsv" lang="es">{{csvFile?csvFile.name:"Seleccione un fichero"}}</label>
         <i class="bi bi-file-earmark-spreadsheet"></i>
       </div>
-      
-      <!-- Gráficas -->
-      <div echarts [options]="graphsOptions" class="demo-chart"  style="width: 100%; min-height: 400px; margin-top: 50px;"></div>
     </div>
+
+    <!-- Gráficas -->
+    <div echarts [options]="graphsOptions" class="demo-chart"  style="width: 100%; min-height: 400px; margin-top: 50px;" *ngIf="isEdition && (projectFrom.sensors && projectFrom.sensors.length > 0)"></div>
 
     <hr class="custom-hr">
 
-    <div class="row">
-        <button type="submit" class="btn btn-secondary" (click)="cancelProject()">Cancelar</button>
-        <button type="submit" class="btn btn-primary offset-1" (click)="createUpdateProject()">Guardar</button>
+    <div class="row justify-content-end modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelProject()" title="Volver a la tabla de proyectos">Cancelar</button>
+        <button type="button" class="btn btn-primary" *ngIf="!isFormDisabled()" (click)="createUpdateProject()" title="Guardar cambios">Guardar</button>
     </div>
     
   </form>
