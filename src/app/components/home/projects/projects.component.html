@@ -15,8 +15,9 @@
                 <tr>
                     <th scope="col"></th>
                     <th scope="col">Nombre del proyecto</th>
-                    <th scope="col">Descripción</th>
                     <th scope="col">Palabras clave</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Fecha de creación</th>
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
@@ -24,8 +25,9 @@
                 <tr *ngFor="let project of projectList; let i = index">
                     <th scope="row">{{i}}</th>
                     <td>{{project.title}}</td>
-                    <td>{{project.description}}</td>
                     <td>{{project.keywords}}</td>
+                    <td>{{project.createdUser.username}}</td>
+                    <td>{{project.dateCreated}}</td>
                     <td>
                         <div class="row justify-content-around">
                             <a class="btn btn-outline-dark" role="button" (click)="formProject(project)" title="Acceder al proyecto">
