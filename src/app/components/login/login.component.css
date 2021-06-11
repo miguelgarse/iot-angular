@@ -12,3 +12,20 @@
     padding-bottom: 20px;
     padding-top: 25px;
 }
+
+.footer{
+    z-index: 10;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #343a40!important;
+    color: white;
+    text-align: center;
+    height: 60px;
+    transition: height 1s;
+}
+
+.footer-copyright > a{
+    color: #ffffffa3;
+}
