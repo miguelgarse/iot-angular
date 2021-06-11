@@ -1,3 +1,4 @@
+import { SensorType } from "./SensorType";
 import { SensorValue } from "./SensorValue";
 import { User } from "./User";
 
@@ -5,7 +6,7 @@ export class Sensor {
 
     id!: number;
     name!: string;
-    sensorTypeId!: number;
+    sensorType!: SensorType;
     sensorValues!: SensorValue[];
     createdUser!: User;
     lastModifieduser!: User;
