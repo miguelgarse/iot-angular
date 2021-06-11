@@ -93,10 +93,10 @@ export class FormProjectComponent implements OnInit {
         })
       });
 
-      leyend.push(this.getSensorTypeById(sensor.sensorTypeId).code);
+      leyend.push(this.getSensorTypeById(sensor.sensorType.id).code);
 
       series.push({
-        name: this.getSensorTypeById(sensor.sensorTypeId).code,
+        name: this.getSensorTypeById(sensor.sensorType.id).code,
         type: 'line',
         showSymbol: false,
         hoverAnimation: false,
@@ -245,5 +245,9 @@ export class FormProjectComponent implements OnInit {
     if (index !== -1) {
       this.projectFrom.keywords.splice(index, 1);
     }   
+  }
+
+  deleteSensor(sensor: Sensor): void{
+
   }
 }
