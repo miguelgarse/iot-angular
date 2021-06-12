@@ -5,19 +5,23 @@ export class Project {
     id!: number;
     title!: string;
     description!: string;
-    keywords!: string;
+    keywords: string[] = [];
     location!: string;
     sensors!: Sensor[];
-    latitude!: number;
-    longitude!: number;
-    rating!: number;
-    createdUser!: User;
-    lastModifieduser!: User;
+    dashboardIot!: string;
+    collaborationPlatorm!: string;
+    createdUser: User;
+    lastModifieduser: User;
     dateCreated!: Date;
     dateLastModified!: Date;
 
     constructor() {
-        // Empty constructor
+        this.title = "";
+        this.description = "";
+        this.location = "";
+        this.dashboardIot = "";
+        this.createdUser = new User();
+        this.lastModifieduser = new User();
     }
 
 }

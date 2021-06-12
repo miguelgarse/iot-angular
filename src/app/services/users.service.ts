@@ -62,4 +62,10 @@ export class UsersService {
     return this.http.put<User>(this.apiEndpoint + "/api/user/updatePassword", formData);
   }
 
+  public updateGithubAccount(gitHub: string): Observable<User> {
+    const formData = new FormData();
+    formData.append('gitHub', gitHub);
+
+    return this.http.put<User>(this.apiEndpoint + "/api/user/updateGithub", formData);
+  }
 }

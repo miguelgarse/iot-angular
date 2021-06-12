@@ -11,6 +11,7 @@ export class ChangePasswordDialogComponent implements OnInit {
   public title!: string;
   public password!: string;
   public repeatedPassword!: string;
+  public showCancel: boolean = false;
 
   @Output() action = new EventEmitter();
 

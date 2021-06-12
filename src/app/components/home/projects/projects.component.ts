@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/models/Project';
-import { Sensor } from 'src/app/models/Sensor';
 import { ProjectsService } from 'src/app/services/projects.service';
+import { TokenService } from 'src/app/services/token.service';
 import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -19,7 +19,8 @@ export class ProjectsComponent implements OnInit {
   constructor(private router: Router, 
               private projectService: ProjectsService,
               private toastr: ToastrService,
-              private modalService: BsModalService) {
+              private modalService: BsModalService,
+              public tokenService: TokenService) {
     
   }
 
@@ -41,7 +42,6 @@ export class ProjectsComponent implements OnInit {
   }
 
   deleteProject(project: Project): void{
-
     let bsModalRef!: BsModalRef;
 
     let config = {
@@ -64,6 +64,6 @@ export class ProjectsComponent implements OnInit {
         });
       }
     });
-
   }
+  
 }

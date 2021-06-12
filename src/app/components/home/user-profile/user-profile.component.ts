@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/User';
 import { UsersService } from 'src/app/services/users.service';
+import { ChangePasswordDialogComponent } from '../../login/change-password-dialog/change-password-dialog.component';
 import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
 import { NewImageDialogComponent } from './new-image-dialog/new-image-dialog.component';
 
@@ -17,7 +19,8 @@ export class UserProfileComponent implements OnInit {
   public imagePath: any;
   public imgURL: any;
 
-  constructor(private usersService: UsersService,
+  constructor(private router: Router,
+    private usersService: UsersService,
     private toastr: ToastrService,
     private modalService: BsModalService) { }
 
@@ -97,6 +100,41 @@ export class UserProfileComponent implements OnInit {
         }
       });
     }
+  }
+
+  public changePassword(): void{
+    let bsModalRef!: BsModalRef;
+
+    let config = {
+      ignoreBackdropClick: true,
+      class: 'modal-md',
+      initialState: {
+        title: 'Cambiar contraseña',
+        showCancel: true
+      }
+    };
+
+    bsModalRef = this.modalService.show(ChangePasswordDialogComponent, config);
+
+    bsModalRef.content.action.subscribe((password: string) => {
+      if (password) {
+        this.usersService.updatePassword(password).subscribe(response => {
+          this.router.navigateByUrl('home', { skipLocationChange: true });
+          this.toastr.success("Contraseña guardada correctamente");
+        }, (error: any) => {
+         throw error;
+        });
+      }
+    });
+  }
+
+  public saveChanges(): void{
+    this.usersService.updateGithubAccount(this.currentUser.githubAccount).subscribe((user: User) => {
+      this.currentUser = user;
+      this.toastr.success("Cuenta de GitHub actualizada correctamente");
+    }, (error: any) => {
+     throw error;
+    });
   }
 
 }

@@ -1,14 +1,10 @@
-import { SensorCategory } from "./SensorCategory";
 import { User } from "./User";
 
-export class SensorType {
+export class SensorCategory {
 
     id!: number;
+    category!: string;
     description!: string;
-    code!: string;
-	category!: SensorCategory;
-	manufacturer!: string;
-	url!: string;
     createdUser!: User;
     lastModifieduser!: User;
     dateCreated!: Date;

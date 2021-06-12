@@ -6,3 +6,18 @@
     height: 100vh;
 }
 
+.chip{
+    background-color: #d9d9d9d1;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 5px;
+    margin: 5px;
+}
+
+::ng-deep popover-container {
+    max-width: 100% !important;
+}
+
+img.rounded-circle{
+    margin: 0px 40px 0px 40px;
+}

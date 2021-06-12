@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+  <form autocomplete="off">
+    <!-- Categoría -->
+    <div class="form-group">
+      <label for="description">Categoría</label>
+      <select class="custom-select" id="category" name="category" [(ngModel)]="categorySelected" (change)="categoryChanged()">
+        <option value="0"selected>Selecciona una categoría</option>
+        <option [value]="sensorCategory.id" *ngFor="let sensorCategory of sensorCategoriesList" [title]="sensorCategory.description">
+          {{sensorCategory.category}} - {{sensorCategory.description}}
+        </option>
+      </select>
+    </div>
+
+    <!-- Fabricante -->
+    <div class="form-group">
+      <label for="description">Fabricante</label>
+      <select class="custom-select" id="manufacturer" name="manufacturer" [(ngModel)]="manufacturerSelected" (change)="manufacturerChanged()">
+        <option value="0" selected>Selecciona un fabricante</option>
+        <option [value]="manufacturer" *ngFor="let manufacturer of manufacturerList" [title]="manufacturer">{{manufacturer}}</option>
+      </select>
+    </div>
+
+    <!-- Tipo de sensor -->
+    <div class="form-group">
+      <label for="description">Tipo de sensor</label>
+      <select class="custom-select" id="sensorType" name="sensorType" [(ngModel)]="sensorTypeSelected" (change)="sensorTypeChanged()">
+        <option value="0" selected>Selecciona un tipo de sensor</option>
+        <option [value]="sensorType.id" *ngFor="let sensorType of sensorTypesList" [title]="sensorType.description">
+          {{sensorType.code}} - {{sensorType.description}}
+        </option>
+      </select>
+    </div>
+
+    <!-- URL with Sensor information -->
+    <div class="form-group" *ngIf="sensor.sensorType.id">
+      <label for="url">URL</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="url" name="url" [(ngModel)]="sensor.sensorType.url" disabled="true">
+        <div class="input-group-append" *ngIf="sensor.sensorType.url">
+          <a role="button" class="btn btn-outline-secondary" [href]="sensor.sensorType.url" target="_blank"><i class="bi bi-link-45deg"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Name -->
+    <div class="form-group">
+      <label for="title">Nombre del sensor</label>
+      <input type="text" class="form-control" id="title" name="title" placeholder="Título" [(ngModel)]="sensor.name" >
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="confirm()">Aceptar</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">Cancelar</button>
+</div>

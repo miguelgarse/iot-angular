@@ -1,5 +1,5 @@
 .footer{
-    z-index: 99999;
+    z-index: 10;
     position: fixed;
     left: 0;
     bottom: 0;
@@ -28,4 +28,17 @@
 .go-top-button:hover{
     cursor: pointer;
     opacity: 0.8;
+}
+
+.bi-github{
+    color: black;
+    font-size: 15px;
+    margin-left: 3px;
+}
+.bi-github:hover{
+    color: black;
+}
+
+.footer-copyright > a{
+    color: #ffffffa3;
 }

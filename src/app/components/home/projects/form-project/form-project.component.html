@@ -2,186 +2,252 @@
 
 <div class="background-image">
 
-  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body custom-card-body">
-   
-    <!-- Title -->
-    <div class="form-group">
-      <label for="title">Título</label>
-      <input type="text" class="form-control" id="title" name="title" placeholder="Título" [(ngModel)]="projectFrom.title" >
-    </div>
+  <h1 class="display-4" *ngIf="!isEdition">Creación de Proyecto</h1>
+  <h1 class="display-4" *ngIf="!isFormDisabled() && projectFrom.id">Edición de Proyecto</h1>
+  <h1 class="display-4" *ngIf="isFormDisabled()">Visualización de Proyecto</h1>
 
-    <!-- Description -->
-    <div class="form-group">
-      <label for="description">Descripción</label>
-      <textarea type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="projectFrom.description"></textarea>
-    </div>
+  <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body custom-card-body" (keydown.enter)="$event.preventDefault()">
+    <fieldset>
+      <legend class="h4">Datos de Proyecto</legend>
 
-    <!-- Keywords -->
-    <div class="form-group">
-      <label for="keywords">Palabras clave</label>
-      <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Meteorología; Temperatura; Madrid; Parque del Retiro"
-      [(ngModel)]="projectFrom.keywords">
-    </div>
+      <!-- Title -->
+      <div class="form-group">
+        <label for="title">Título</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Título" maxlength="64" 
+              [(ngModel)]="projectFrom.title" [disabled]="isFormDisabled()">
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.title.length}}/64</small>
+      </div>
 
-    <!-- Dirección -->
-    <div class="form-group">
-      <label for="userGroup">Dirección del proyecto</label>
-      <input type="text" class="form-control" id="userGroup" name="userGroup" 
-             placeholder="Calle de Alan Turing, s/n, 28031, Madrid" [(ngModel)]="projectFrom.location">
-    </div>
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea type="text" class="form-control" id="description" name="description" placeholder="Descripción" maxlength="2000" rows="5"
+                  [(ngModel)]="projectFrom.description" [disabled]="isFormDisabled()"></textarea>
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.description.length}}/2000</small>
+      </div>
 
-    <!-- Coordenadas -->
-    <div class="form-row">
-      <div class="form-group col-8">
-        <label for="userGroup">Coordenadas</label>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" id="userGroup" name="userGroup" placeholder="40.3895, -3.6270">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="mapModalButton" 
-                    title="Ver localizacion en el mapa" (click)="openMapModal()"><i class="bi bi-map"></i></button>
+      <!-- Keywords -->
+      <div class="form-group">
+        <label for="keywords">Palabras clave</label>
+        <input type="text" class="form-control" id="keywords" name="keywords" (keyup.enter)="addKeyword()" [(ngModel)]="keywordInput" *ngIf="!isFormDisabled()"
+              placeholder="Introduzca una palabra clave y pulse intro">
+        <div class="row col-xs-3 col-sm-7 col-md-9 col-lg-10">
+          <div class="chip" *ngFor="let keyword of projectFrom.keywords">
+            {{keyword}} 
+            <i class="bi bi-x" style="cursor: pointer" (click)="deleteKeyword(keyword)" *ngIf="!isFormDisabled()"></i>
           </div>
         </div>
       </div>
-    </div>
-    
 
-    <hr>
+      <!-- Dirección -->
+      <div class="form-group">
+        <label for="address">Dirección del proyecto</label>
+        <input type="text" class="form-control" id="address" name="address" placeholder="Calle de Alan Turing, s/n, 28031, Madrid" 
+              [(ngModel)]="projectFrom.location" [disabled]="isFormDisabled()">
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.location.length}}/255</small>
+      </div>
 
-    <div>
-      <a type="button" class="btn-floating light-blue create-buttom" title="Crear nuevo proyecto"
-          data-toggle="modal" data-target="#sensorModal" *ngIf="!isEdition">
+      <!-- Dashboard Plataforma IoT -->
+      <div class="form-group">
+        <label for="dashboardIot">Dashboard Plataforma IoT</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="dashboardIot" name="dashboardIot" placeholder="Enlace a la plataforma de IoT asociada" 
+                [(ngModel)]="projectFrom.dashboardIot" [disabled]="isFormDisabled()">
+          <div class="input-group-append" *ngIf="projectFrom.dashboardIot">
+            <a role="button" class="btn btn-outline-secondary" [href]="projectFrom.dashboardIot" target="_blank"><i class="bi bi-link-45deg"></i></a>
+          </div>
+        </div>
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.dashboardIot.length}}/500</small>
+      </div>
+
+      <!-- Plataforma Desarrollo Colaborativo -->
+      <div class="form-group">
+        <label for="collaborationPlatorm">Plataforma Desarrollo Colaborativo</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="collaborationPlatorm" name="collaborationPlatorm" placeholder="Enlace al repositorio de GitHub, GitLab, Bitbucket, etc." 
+                [(ngModel)]="projectFrom.collaborationPlatorm" [disabled]="isFormDisabled()">
+          <div class="input-group-append" *ngIf="projectFrom.collaborationPlatorm">
+            <a role="button" class="btn btn-outline-secondary" [href]="projectFrom.collaborationPlatorm" target="_blank"><i class="bi bi-link-45deg"></i></a>
+          </div>
+        </div>
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.collaborationPlatorm.length}}/500</small>
+      </div>
+
+      <!-- Enlace a la API del proyecto -->
+      <div class="form-group">
+        <label for="urlApiRest">Enlace API Rest</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="urlApiRest" name="urlApiRest" disabled [(ngModel)]="urlApiRest">
+          <div class="input-group-append" *ngIf="urlApiRest">
+            <a role="button" class="btn btn-outline-secondary" [href]="urlApiRest" target="_blank"><i class="bi bi-link-45deg"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #userPopup>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-column align-items-center text-center">
+                  <img [src]="projectFrom.createdUser.profileImage?projectFrom.createdUser.profileImage:'../../../../assets/avatar.png'" alt="Imagen de perfil" 
+                      class="rounded-circle" width="100" title="Imagen de perfil">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="card mb-3">
+              <div class="card-body">
+                <div>
+                  <h6 class="mb-0">Nombre</h6>
+                  <div class="text-secondary">
+                    {{projectFrom.createdUser.name}}
+                  </div>
+                </div>
+                <hr>
+                <div>
+                  <h6 class="mb-0">Apellidos</h6>
+                  <div class="text-secondary">
+                    {{projectFrom.createdUser.lastname}}
+                  </div>
+                </div>
+                <hr>
+                <div>
+                  <h6 class="mb-0">Correo</h6>
+                  <div class="text-secondary">
+                    {{projectFrom.createdUser.email}}
+                  </div>
+                </div>
+                <hr>
+                <div>
+                  <h6 class="mb-0">Cuenta de usuario</h6>
+                  <div class="text-secondary">
+                    {{projectFrom.createdUser.username}}
+                  </div>
+                </div>
+                <hr>
+                <div>
+                  <h6 class="mb-0">Cuenta de Github</h6>
+                  <div class="text-secondary">
+                    {{projectFrom.createdUser.githubAccount}} 
+                    <a class="btn" [href]="projectFrom.createdUser.githubAccount" target="_blank" *ngIf="projectFrom.createdUser.githubAccount">
+                      <i class="bi bi-link-45deg"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="form-row" *ngIf="isEdition">
+        <!-- Creador -->
+        <div class="form-group col-md-4">
+          <label for="createdUser">Autor</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="createdUser" name="createdUser" disabled [value]="projectFrom.createdUser.username">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" [popover]="userPopup" popoverTitle="Usuario autor" 
+                      container="body" [outsideClick]="true">
+                <i class="bi bi-person-lines-fill"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fecha de creación -->
+        <div class="form-group col-md-4">
+          <label for="dateCreated">Fecha de creación</label>
+          <input type="text" class="form-control" id="dateCreated" name="dateCreated" disabled [value]="projectFrom.dateCreated">
+        </div>
+
+        <!-- Fecha de modificación -->
+        <div class="form-group col-md-4">
+          <label for="dateLastModified">Fecha de modificación</label>
+          <input type="text" class="form-control" id="dateLastModified" name="dateLastModified" disabled [value]="projectFrom.dateLastModified">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="h4">Componentes del sistema</legend>
+
+      <!-- Componentes -->
+      <div class="form-group">
+        <label for="components">Componentes</label>
+        <input type="text" class="form-control" id="components" name="components" (keyup.enter)="addKeyword()" [(ngModel)]="keywordInput" *ngIf="!isFormDisabled()"
+              placeholder="Introduzca una palabra clave y pulse intro">
+        <div class="row col-xs-3 col-sm-7 col-md-9 col-lg-10">
+          <div class="chip" *ngFor="let keyword of projectFrom.keywords">
+            {{keyword}} 
+            <i class="bi bi-x" style="cursor: pointer" (click)="deleteKeyword(keyword)" *ngIf="!isFormDisabled()"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-warning" role="alert" *ngIf="isEdition && (!projectFrom.sensors || projectFrom.sensors.length == 0)">No se han añadido sensores a este proyecto</div>
+
+      <a type="button" class="btn-floating light-blue create-buttom" title="Añadir sensor" *ngIf="!isFormDisabled()" (click)="openSensorModal()">
         <i class="bi bi-plus-square"></i> Añadir sensor
       </a>
 
-      <table class="table table-striped" *ngIf="projectFrom.sensors">
+      <table class="table table-striped" *ngIf="projectFrom.sensors && projectFrom.sensors.length > 0">
         <thead>
             <tr>
                 <th scope="col"></th>
                 <th scope="col">Nombre del sensor</th>
-                <th scope="col">Tipo de sensor</th>
-                <th scope="col">Acciones</th>
+                <th scope="col">Tipo</th>
+                <th scope="col" *ngIf="!isFormDisabled()">Acciones</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let sensor of projectFrom.sensors; let i = index">
                 <th scope="row">{{i}}</th>
                 <td>{{sensor.name}}</td>
-                <td>{{getSensorTypeById(sensor.sensorTypeId).code}}</td>
+                <td>{{getSensorTypeById(sensor.sensorType.id).code}}</td>
                 <td>
-                    <a role="button" class="btn btn-outline-dark"><i class="bi bi-trash"></i></a>
+                  <div class="row justify-content-around">
+                    <a class="btn btn-outline-dark" role="button" (click)="deleteSensor(sensor)" *ngIf="!isFormDisabled()" title="Borrar el sensor">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                  </div>
                 </td>
             </tr>
         </tbody>
       </table>
 
-      <hr>
-    </div>
-    
-    <!-- Datos de los sensores -->
-    <div class="input-group mb-3" *ngIf="isEdition">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroupFileAddon01">Añadir datos</span>
+
+    </fieldset>
+
+    <fieldset>
+      <legend class="h4">Datasets</legend>
+
+
+      <!-- Datos de los sensores -->
+      <div class="input-group mb-3" *ngIf="!isFormDisabled()">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupFileAddon01">Añadir datos</span>
+        </div>
+        <div class="custom-file">
+          <input type="file" accept=".csv" class="custom-file-input" id="uploadCsv" aria-describedby="inputGroupFileAddon01" (change)="fileChange($event)">
+          <label class="custom-file-label" for="uploadCsv" lang="es">{{csvFile?csvFile.name:"Seleccione un fichero"}}</label>
+          <i class="bi bi-file-earmark-spreadsheet"></i>
+        </div>
       </div>
-      <div class="custom-file">
-        <input type="file" accept=".csv" class="custom-file-input" id="uploadCsv" aria-describedby="inputGroupFileAddon01" (change)="fileChange($event)">
-        <label class="custom-file-label" for="uploadCsv">{{csvFile?csvFile.name:"Seleccione un fichero"}}</label>
-      </div>
-      
+
       <!-- Gráficas -->
-      <div echarts [options]="graphsOptions" class="demo-chart"  style="width: 100%; min-height: 400px; margin-top: 50px;"></div>
-    </div>
+      <div echarts [options]="graphsOptions" class="chart" theme="coolTheme" *ngIf="isEdition && (projectFrom.sensors && projectFrom.sensors.length > 0)"></div>
+    </fieldset>
 
-    <hr>
-
-    <div>
-      <rating [max]="10" [(ngModel)]="projectFrom.rating" [customTemplate]="tt"></rating>
-      <div class="card">
-        <pre class="card-block card-header" style="margin:15px 0;"> <b>(<i>Rate:</i> {{projectFrom.rating}})</b> </pre>
-      </div>
-      <ng-template #tt let-i="index" let-v="value">
-        <button class="btn btn-{{i < v ? 'warning' : 'default'}}">
-          {{i < v ? '&#9733;' : '&#9734;'}}
-        </button>
-      </ng-template>
-    </div>
-
-    <div class="row">
-        <button type="submit" class="btn btn-secondary" (click)="cancelProject()">Cancelar</button>
-        <button type="submit" class="btn btn-primary offset-1" (click)="createUpdateProject()">Guardar</button>
+    <div class="row justify-content-end modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelProject()" title="Volver a la tabla de proyectos">Cancelar</button>
+        <button type="button" class="btn btn-primary" *ngIf="!isFormDisabled()" (click)="createUpdateProject()" title="Guardar cambios">Guardar</button>
     </div>
     
   </form>
-
-  
-  
-
-
-
-
-
-
-
-
-
-  <div class="modal fade" id="mapModal" tabindex="-1" #mapModal>
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="mapModalLabel">Ubicación del Proyecto</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-            <app-leaflet-map [projectList]="[]"></app-leaflet-map>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Acceptar</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-    </div>
-  </div>
-
-
-  <div class="modal fade" id="sensorModal" tabindex="-1" role="dialog" aria-labelledby="sensorModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="sensorModalLabel">Añadir sensor</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-              <form>
-                <!-- Name -->
-                <div class="form-group">
-                  <label for="title">Nombre del sensor</label>
-                  <input type="text" class="form-control" id="title" name="title" placeholder="Título" [(ngModel)]="auxSensor.name" >
-                </div>
-            
-                <!-- Type -->
-                <div class="form-group">
-                  <label for="description">Tipo de sensor</label>
-                  <select class="custom-select" id="sensorType" name="sensorType" [(ngModel)]="auxSensor.sensorTypeId">
-                    <option value="0"selected>Selecciona un tipo de sensor</option>
-                    <option [value]="sensorType.id" *ngFor="let sensorType of sensorTypesMasterTable" [title]="sensorType.description">{{sensorType.code}}</option>
-                  </select>
-                </div>
-              </form>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addSensor()">Añadir</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-
-        </div>
-    </div>
-  </div>
-
 
 </div>
 

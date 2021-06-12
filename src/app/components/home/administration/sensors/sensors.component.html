@@ -26,7 +26,7 @@
                 <tr *ngFor="let sensorType of sensorTypeList; let i = index">
                     <th scope="row">{{i}}</th>
                     <td>{{sensorType.code}}</td>
-                    <td>{{sensorType.type}}</td>
+                    <td>{{sensorType.category.category}}</td>
                     <td>{{sensorType.manufacturer}}</td>
                     <td>
                         <div class="row justify-content-around">

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Sensor } from '../models/Sensor';
+import { SensorCategory } from '../models/SensorCategory';
 import { SensorType } from '../models/SensorType';
 import { SensorValue } from '../models/SensorValue';
 
@@ -51,6 +52,10 @@ export class SensorService {
   
   public deleteSensorTypeById(sensorTypeId: number): Observable<void> {
     return this.http.delete<void>(this.apiEndpoint + "/api/sensorType/" + sensorTypeId);
+  }
+
+  public findAllSensorCategories(): Observable<SensorCategory[]> {
+    return this.http.get<SensorCategory[]>(this.apiEndpoint + "/api/sensorType/categories");
   }
   
 }

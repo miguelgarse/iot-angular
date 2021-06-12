@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/home/common/navbar/navbar.component';
 import { RegisterComponent } from './components/home/administration/register/register.component';
-import { LeafletMapComponent } from './components/home/common/leaflet-map/leaflet-map.component';
 import { FormProjectComponent } from './components/home/projects/form-project/form-project.component';
 import { ProjectsComponent } from './components/home/projects/projects.component';
 import { LoginComponent } from './components/login/login.component';
@@ -24,10 +23,12 @@ import { UserProfileComponent } from './components/home/user-profile/user-profil
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ConfirmDialogComponent } from './components/home/common/confirm-dialog/confirm-dialog.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { RatingModule } from 'ngx-bootstrap/rating';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { NewImageDialogComponent } from './components/home/user-profile/new-image-dialog/new-image-dialog.component';
 import { UserDataDialogComponent } from './components/home/administration/register/user-data-dialog/user-data-dialog.component';
 import { ChangePasswordDialogComponent } from './components/login/change-password-dialog/change-password-dialog.component';
+import { SensorSelectionDialogComponent } from './components/home/projects/form-project/sensor-selection-dialog/sensor-selection-dialog.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -38,14 +39,14 @@ import { ChangePasswordDialogComponent } from './components/login/change-passwor
     RegisterComponent,
     ProjectsComponent,
     FormProjectComponent,
-    LeafletMapComponent,
     FooterComponent,
     SensorsComponent,
     UserProfileComponent,
     ConfirmDialogComponent,
     NewImageDialogComponent,
     UserDataDialogComponent,
-    ChangePasswordDialogComponent
+    ChangePasswordDialogComponent,
+    SensorSelectionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -64,11 +65,12 @@ import { ChangePasswordDialogComponent } from './components/login/change-passwor
       echarts: () => import('echarts')
     }), 
     ModalModule.forRoot(),
-    RatingModule.forRoot()
+    PopoverModule.forRoot()
   ],
   providers: [
     interceptorProvider,
-    globalErrorHandlerProvider
+    globalErrorHandlerProvider, 
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

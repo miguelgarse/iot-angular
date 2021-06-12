@@ -1,16 +1,16 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/models/Project';
 import { Sensor } from 'src/app/models/Sensor';
 import { SensorType } from 'src/app/models/SensorType';
-import { SensorValue } from 'src/app/models/SensorValue';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { TokenService } from 'src/app/services/token.service';
-
-// jQuery Sign $
-declare let $: any;
+import { SensorSelectionDialogComponent } from './sensor-selection-dialog/sensor-selection-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-form-project',
@@ -20,37 +20,28 @@ declare let $: any;
 export class FormProjectComponent implements OnInit {
 
   public isEdition: boolean = false;
-  public isReadOnly: boolean = false;
-  public isCurrentUserCreator = false;
+  public isCurrentUserCreator: boolean = false;
 
-  public projectId!: number;
   public projectFrom: Project = new Project();
   public sensorTypesMasterTable: SensorType[] = [];
 
-  public auxSensor: Sensor = new Sensor();
-  
   public csvFile!: File;
-
   public graphsOptions: any;
-  
-  @ViewChild('mapModal') mapModal!: ElementRef;
+  public keywordInput: string = "";
+
+  public urlApiRest: string = environment.apiUrl + "/data/mgarcia?token=8cltxPHAQJhYCB4";
+
 
   constructor(private projectService: ProjectsService,
     private sensorService: SensorService,
     private tokenService: TokenService,
     private toast: ToastrService,
-    private router: Router) {
+    private router: Router,
+    private modalService: BsModalService,
+    public datepipe: DatePipe) {
 
     let currentNavigation: any = this.router.getCurrentNavigation();
 
-    if (currentNavigation != null && currentNavigation.extras.state.id) {
-      this.projectId = currentNavigation.extras.state.id;
-
-      this.isEdition = true;
-    }
-  }
-
-  ngOnInit() {
     // Get all sensors types
     this.sensorService.findAllSensorTypes().subscribe((sensorTypes: SensorType[]) => {
       this.sensorTypesMasterTable = sensorTypes;
@@ -58,12 +49,22 @@ export class FormProjectComponent implements OnInit {
       throw error;
     });
 
-    if(this.projectId && this.isEdition){
-      this.projectService.findProjectById(this.projectId).subscribe((project: Project) => {
+    if (currentNavigation != null && currentNavigation.extras.state.id) {
+      this.isEdition = true;
+
+      this.projectService.findProjectById(currentNavigation.extras.state.id).subscribe((project: Project) => {
         if(project && project.id){
           this.projectFrom = project;
-  
-          this.createGraph(project.sensors);
+
+          if(!this.projectFrom.dashboardIot)
+            this.projectFrom.dashboardIot = "";
+
+          if(!this.projectFrom.collaborationPlatorm)
+            this.projectFrom.collaborationPlatorm = "";
+
+          if(project.sensors && project.sensors.length > 0){
+            this.createGraph(project.sensors);
+          }
           
           if(project.createdUser.username == this.tokenService.getUserName()){
             this.isCurrentUserCreator = true;
@@ -80,73 +81,46 @@ export class FormProjectComponent implements OnInit {
     }
   }
 
+  ngOnInit() { }
+
+  isFormDisabled(): boolean {
+    return this.isEdition && !this.isCurrentUserCreator && !this.tokenService.isAdmin();
+  }
+
   createGraph(sensors: Sensor[]): void{
-    let series: any[] = [];
-    let xAxis: Date[] = [];
-    let leyend: string[] = [];
+    const xAxisData = [];
+    const data1 = [];
 
-    sensors.forEach(sensor => {
-      let data: any[] = [];
-      sensor.sensorValues.forEach(element => {
-        console.info("Sensor name: " + sensor.name + " - " + element.timestamp + " -- " + element.value);
-        data.push({
-          name: element.timestamp,
-          value: element.value
-        })
-      });
+    for (let i = 0; i < sensors[0].sensorValues.length; i++) {
+      let timestamp: Date = sensors[0].sensorValues[i].timestamp;
+      xAxisData.push(this.datepipe.transform(timestamp, 'dd/MM/yyyy'));
+      data1.push(sensors[0].sensorValues[i].value);
+    }
 
-      leyend.push(this.getSensorTypeById(sensor.sensorTypeId).code);
-
-      series.push({
-        name: this.getSensorTypeById(sensor.sensorTypeId).code,
-        type: 'line',
-        showSymbol: false,
-        hoverAnimation: false,
-        data: data
-      });
-      
-    });
-
-    // Creamos los valores del eje X
-    sensors[0].sensorValues.forEach(sensorValue => {
-      xAxis.push(sensorValue.timestamp);
-    });
-
-    // Creamos las opciones de la gráfica
     this.graphsOptions = {
       legend: {
-        data: leyend,
+        data: [sensors[0].name],
         align: 'left',
       },
-      title: {
-        text: this.projectFrom.title
-      },
-      tooltip: {
-        trigger: 'axis',
-        formatter: (params: any) => {
-          params = params[0];
-          const date = new Date(params.name);
-          return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " - " + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ' -- ' + params.value;
-        },
-        axisPointer: {
-          animation: false
-        }
-      },
+      tooltip: {},
       xAxis: {
-        type: 'time',
+        data: xAxisData,
+        silent: true,
         splitLine: {
-          show: false
+          show: false,
         },
-        data: xAxis
       },
-      yAxis: {
-        type: 'value',
-        boundaryGap: [0, '100%'],
-        splitLine: {
-          show: false
+      yAxis: {},
+      series: [
+        {
+          name: sensors[0].name,
+          type: 'line',
+          data: data1,
+          animationDelay: (idx: number) => idx * 10,
         }
-      },
-      series: series
+      ],
+      animationEasing: 'elasticOut',
+      animationDelayUpdate: (idx: number) => idx * 5,
     };
   }
 
@@ -174,15 +148,6 @@ export class FormProjectComponent implements OnInit {
     this.router.navigate(['home'], { skipLocationChange: true });
   }
 
-  addSensor(): void{
-    if(!this.projectFrom.sensors){
-      this.projectFrom.sensors = [];
-    }
-    
-    this.projectFrom.sensors.push(this.auxSensor);
-    this.auxSensor = new Sensor();
-  }
-
   getSensorTypeById(sensorTypeId: number): SensorType {
     let sensorTypeResult: SensorType = new SensorType();
 
@@ -195,7 +160,7 @@ export class FormProjectComponent implements OnInit {
     return sensorTypeResult;
   }
 
-  fileChange(event: any) {
+  public fileChange(event: any) {
     if(event.target.files != null && event.target.files.length > 0){
       let fileSize: number = event.target.files[0].size;
 
@@ -205,7 +170,7 @@ export class FormProjectComponent implements OnInit {
     }
   }
 
-  uploadFiles(): void {
+  public uploadFiles(): void {
     this.projectService.uploadFiles(this.csvFile).subscribe(response => {
 
     }, error => {
@@ -214,8 +179,51 @@ export class FormProjectComponent implements OnInit {
     });
   }
 
-  openMapModal(): void{
-    $(this.mapModal.nativeElement).modal('show');
+  public openSensorModal(): void{
+    let bsModalRef!: BsModalRef;
+
+    let config = {
+      ignoreBackdropClick: true,
+      class: 'modal-lg',
+      initialState: {
+        title: 'Añadir un sensor',
+        sensor: new Sensor(),
+        sensorTypesMasterTable: this.sensorTypesMasterTable
+      }
+    };
+
+    bsModalRef = this.modalService.show(SensorSelectionDialogComponent, config);
+
+    bsModalRef.content.action.subscribe((sensor: Sensor) => {
+      if (sensor) {
+        if(!this.projectFrom.sensors){
+          this.projectFrom.sensors = [];
+        }
+        this.projectFrom.sensors.push(sensor);
+      }
+    });
   }
 
+  addKeyword(): void {
+    if(this.keywordInput && this.keywordInput.trim().length > 0){
+      if(this.projectFrom.keywords.includes(this.keywordInput)){
+        this.toast.info("La palabra clave " + this.keywordInput + " ya está añadida");
+      } else{
+        this.projectFrom.keywords.push(this.keywordInput);
+  
+        this.keywordInput = "";
+      }
+    }
+  }
+
+  deleteKeyword(keyword: string): void {
+    const index: number = this.projectFrom.keywords.indexOf(keyword);
+    if (index !== -1) {
+      this.projectFrom.keywords.splice(index, 1);
+    }   
+  }
+
+  deleteSensor(sensor: Sensor): void{
+
+  }
 }
