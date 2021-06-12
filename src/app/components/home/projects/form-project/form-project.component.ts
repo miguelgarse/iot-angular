@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -9,6 +10,7 @@ import { ProjectsService } from 'src/app/services/projects.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { TokenService } from 'src/app/services/token.service';
 import { SensorSelectionDialogComponent } from './sensor-selection-dialog/sensor-selection-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-form-project',
@@ -27,12 +29,16 @@ export class FormProjectComponent implements OnInit {
   public graphsOptions: any;
   public keywordInput: string = "";
 
+  public urlApiRest: string = environment.apiUrl + "/data/mgarcia?token=8cltxPHAQJhYCB4";
+
+
   constructor(private projectService: ProjectsService,
     private sensorService: SensorService,
     private tokenService: TokenService,
     private toast: ToastrService,
     private router: Router,
-    private modalService: BsModalService) {
+    private modalService: BsModalService,
+    public datepipe: DatePipe) {
 
     let currentNavigation: any = this.router.getCurrentNavigation();
 
@@ -50,8 +56,11 @@ export class FormProjectComponent implements OnInit {
         if(project && project.id){
           this.projectFrom = project;
 
-          if(!this.projectFrom.urlThingsboard)
-            this.projectFrom.urlThingsboard = "";
+          if(!this.projectFrom.dashboardIot)
+            this.projectFrom.dashboardIot = "";
+
+          if(!this.projectFrom.collaborationPlatorm)
+            this.projectFrom.collaborationPlatorm = "";
 
           if(project.sensors && project.sensors.length > 0){
             this.createGraph(project.sensors);
@@ -79,72 +88,39 @@ export class FormProjectComponent implements OnInit {
   }
 
   createGraph(sensors: Sensor[]): void{
-    let series: any[] = [];
-    let xAxis: Date[] = [];
-    let leyend: string[] = [];
+    const xAxisData = [];
+    const data1 = [];
 
-    sensors.forEach(sensor => {
-      let data: any[] = [];
-      sensor.sensorValues.forEach(element => {
-        console.info("Sensor name: " + sensor.name + " - " + element.timestamp + " -- " + element.value);
-        data.push({
-          name: element.timestamp,
-          value: element.value
-        })
-      });
+    for (let i = 0; i < sensors[0].sensorValues.length; i++) {
+      let timestamp: Date = sensors[0].sensorValues[i].timestamp;
+      xAxisData.push(this.datepipe.transform(timestamp, 'dd/MM/yyyy'));
+      data1.push(sensors[0].sensorValues[i].value);
+    }
 
-      leyend.push(this.getSensorTypeById(sensor.sensorType.id).code);
-
-      series.push({
-        name: this.getSensorTypeById(sensor.sensorType.id).code,
-        type: 'line',
-        showSymbol: false,
-        hoverAnimation: false,
-        data: data
-      });
-      
-    });
-
-    // Creamos los valores del eje X
-    sensors[0].sensorValues.forEach(sensorValue => {
-      xAxis.push(sensorValue.timestamp);
-    });
-
-    // Creamos las opciones de la gráfica
     this.graphsOptions = {
       legend: {
-        data: leyend,
+        data: [sensors[0].name],
         align: 'left',
       },
-      title: {
-        text: this.projectFrom.title
-      },
-      tooltip: {
-        trigger: 'axis',
-        formatter: (params: any) => {
-          params = params[0];
-          const date = new Date(params.name);
-          return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " - " + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ' -- ' + params.value;
-        },
-        axisPointer: {
-          animation: false
-        }
-      },
+      tooltip: {},
       xAxis: {
-        type: 'time',
+        data: xAxisData,
+        silent: true,
         splitLine: {
-          show: false
+          show: false,
         },
-        data: xAxis
       },
-      yAxis: {
-        type: 'value',
-        boundaryGap: [0, '100%'],
-        splitLine: {
-          show: false
+      yAxis: {},
+      series: [
+        {
+          name: sensors[0].name,
+          type: 'line',
+          data: data1,
+          animationDelay: (idx: number) => idx * 10,
         }
-      },
-      series: series
+      ],
+      animationEasing: 'elasticOut',
+      animationDelayUpdate: (idx: number) => idx * 5,
     };
   }
 

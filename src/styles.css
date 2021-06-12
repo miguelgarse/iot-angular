@@ -102,4 +102,12 @@ legend {
     border-radius: 4px;
     padding: 3px 5px 3px 7px!important;
     width: auto!important;
+    -webkit-box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.7); 
+    box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.7);
+}
+
+.chart{
+    width: 100%; 
+    min-height: 500px; 
+    margin-top: 50px;
 }

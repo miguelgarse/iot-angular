@@ -8,7 +8,8 @@ export class Project {
     keywords: string[] = [];
     location!: string;
     sensors!: Sensor[];
-    urlThingsboard!: string;
+    dashboardIot!: string;
+    collaborationPlatorm!: string;
     createdUser: User;
     lastModifieduser: User;
     dateCreated!: Date;
@@ -18,7 +19,7 @@ export class Project {
         this.title = "";
         this.description = "";
         this.location = "";
-        this.urlThingsboard = "";
+        this.dashboardIot = "";
         this.createdUser = new User();
         this.lastModifieduser = new User();
     }

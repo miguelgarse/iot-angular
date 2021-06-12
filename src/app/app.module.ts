@@ -28,6 +28,7 @@ import { NewImageDialogComponent } from './components/home/user-profile/new-imag
 import { UserDataDialogComponent } from './components/home/administration/register/user-data-dialog/user-data-dialog.component';
 import { ChangePasswordDialogComponent } from './components/login/change-password-dialog/change-password-dialog.component';
 import { SensorSelectionDialogComponent } from './components/home/projects/form-project/sensor-selection-dialog/sensor-selection-dialog.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { SensorSelectionDialogComponent } from './components/home/projects/form-
   ],
   providers: [
     interceptorProvider,
-    globalErrorHandlerProvider
+    globalErrorHandlerProvider, 
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })
