@@ -178,12 +178,12 @@
       <!-- Componentes -->
       <div class="form-group">
         <label for="components">Componentes</label>
-        <input type="text" class="form-control" id="components" name="components" (keyup.enter)="addKeyword()" [(ngModel)]="keywordInput" *ngIf="!isFormDisabled()"
+        <input type="text" class="form-control" id="components" name="components" (keyup.enter)="addComponent()" [(ngModel)]="componentsInput" *ngIf="!isFormDisabled()"
               placeholder="Introduzca una palabra clave y pulse intro">
         <div class="row col-xs-3 col-sm-7 col-md-9 col-lg-10">
-          <div class="chip" *ngFor="let keyword of projectFrom.keywords">
-            {{keyword}} 
-            <i class="bi bi-x" style="cursor: pointer" (click)="deleteKeyword(keyword)" *ngIf="!isFormDisabled()"></i>
+          <div class="chip" *ngFor="let component of projectFrom.components">
+            {{component}} 
+            <i class="bi bi-x" style="cursor: pointer" (click)="deleteComponent(component)" *ngIf="!isFormDisabled()"></i>
           </div>
         </div>
       </div>

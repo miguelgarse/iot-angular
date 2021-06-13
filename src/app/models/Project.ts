@@ -10,6 +10,7 @@ export class Project {
     sensors!: Sensor[];
     dashboardIot!: string;
     collaborationPlatorm!: string;
+    components: string[] = [];
     createdUser: User;
     lastModifieduser: User;
     dateCreated!: Date;
