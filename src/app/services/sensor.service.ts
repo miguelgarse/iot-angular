@@ -58,4 +58,16 @@ export class SensorService {
     return this.http.get<SensorCategory[]>(this.apiEndpoint + "/api/sensorType/categories");
   }
   
+  public findSensorTypeById(sensorTypeId: number): Observable<SensorType> {
+    return this.http.get<SensorType>(this.apiEndpoint + "/api/sensorType/" + sensorTypeId);
+  }
+
+  public updateSensorType(sensorType: SensorType): Observable<SensorType> {
+    return this.http.put<SensorType>(this.apiEndpoint + "/api/sensorType", sensorType);
+  }
+
+  public createSensorType(sensorType: SensorType): Observable<SensorType> {
+    return this.http.post<SensorType>(this.apiEndpoint + "/api/sensorType", sensorType);
+  }
+
 }
