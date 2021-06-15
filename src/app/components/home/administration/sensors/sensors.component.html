@@ -10,35 +10,36 @@
 
         <h5 class="card-title text-center">Tabla de tipos de sensor</h5>
         
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Código</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Fabricante</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let sensorType of sensorTypeList; let i = index">
-                    <th scope="row">{{i}}</th>
-                    <td>{{sensorType.code}}</td>
-                    <td>{{sensorType.category.category}}</td>
-                    <td>{{sensorType.manufacturer}}</td>
-                    <td>
-                        <div class="row justify-content-around">
-                            <a class="btn btn-outline-dark" role="button" (click)="editSensorType(sensorType)">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a class="btn btn-outline-dark" role="button" (click)="deleteSensorType(sensorType)">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive-lg">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col" class="text-center">Código</th>
+                        <th scope="col" class="text-center">Tipo</th>
+                        <th scope="col" class="text-center">Fabricante</th>
+                        <th scope="col" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sensorType of sensorTypeList; let i = index">
+                        <th scope="row" class="col-md-2">{{i}}</th>
+                        <td class="col-md-2 text-center">{{sensorType.code}}</td>
+                        <td class="col-md-3 text-center">{{sensorType.category.category}}</td>
+                        <td class="col-md-3 text-center">{{sensorType.manufacturer}}</td>
+                        <td class="col-md-2 text-center">
+                            <div class="row justify-content-around">
+                                <a class="btn btn-outline-dark" role="button" (click)="editSensorType(sensorType)">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a class="btn btn-outline-dark" role="button" (click)="deleteSensorType(sensorType)">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
 </div>

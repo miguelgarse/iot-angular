@@ -10,37 +10,39 @@
     <div class="main-container card-body custom-card-body" style="margin-bottom: 90px">
         <h5 class="card-title text-center">Tabla de Proyectos</h5>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Nombre del proyecto</th>
-                    <th scope="col">Palabras clave</th>
-                    <th scope="col">Autor</th>
-                    <th scope="col">Fecha de creación</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let project of projectList; let i = index">
-                    <th scope="row">{{i}}</th>
-                    <td>{{project.title}}</td>
-                    <td>{{project.keywords}}</td>
-                    <td>{{project.createdUser.username}}</td>
-                    <td>{{project.dateCreated}}</td>
-                    <td>
-                        <div class="row justify-content-around">
-                            <a class="btn btn-outline-dark" role="button" (click)="formProject(project)" title="Acceder al proyecto">
-                                <i class="bi bi-file-earmark-bar-graph"></i>
-                            </a>
-                            <a class="btn btn-outline-dark" role="button" (click)="deleteProject(project)" *ngIf="tokenService.isAdmin()" title="Borrar el proyecto">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive-lg">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col" class="text-center">Nombre del proyecto</th>
+                        <th scope="col" class="text-center">Palabras clave</th>
+                        <th scope="col" class="text-center">Autor</th>
+                        <th scope="col" class="text-center">Fecha de creación</th>
+                        <th scope="col" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let project of projectList; let i = index">
+                        <th scope="row" class="col-md-1">{{i}}</th>
+                        <td class="col-md-3">{{project.title}}</td>
+                        <td class="col-md-3">{{project.keywords}}</td>
+                        <td class="col-md-2 text-center">{{project.createdUser.username}}</td>
+                        <td class="col-md-2 text-center">{{project.dateCreated}}</td>
+                        <td class="col-md-1 text-center">
+                            <div class="row justify-content-around">
+                                <a class="btn btn-outline-dark" role="button" (click)="formProject(project)" title="Acceder al proyecto">
+                                    <i class="bi bi-file-earmark-bar-graph"></i>
+                                </a>
+                                <a class="btn btn-outline-dark" role="button" (click)="deleteProject(project)" *ngIf="tokenService.isAdmin()" title="Borrar el proyecto">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     
 </div>
