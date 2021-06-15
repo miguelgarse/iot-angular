@@ -104,14 +104,18 @@ export class SensorSelectionDialogComponent implements OnInit {
           this.sensorTypesList.push(sensorType);
         }
       }
-      
     });   
   }
 
   sensorTypeChanged(): void{
     this.sensorTypesMasterTable.forEach((sensorType: SensorType) => {
       if(sensorType.id == this.sensorTypeSelected){
-        this.sensor.sensorType = sensorType;
+        this.sensor.sensorType = new SensorType();
+        this.sensor.sensorType.url  = sensorType.url;
+        this.sensor.sensorType.id   = sensorType.id;
+        this.sensor.sensorType.code = sensorType.code;
+        this.sensor.sensorType.manufacturer = sensorType.manufacturer;
+        this.sensor.sensorType.category.category = sensorType.category.category;
       }
     });   
   }
