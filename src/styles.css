@@ -111,3 +111,10 @@ legend {
     min-height: 500px; 
     margin-top: 50px;
 }
+
+.logo-iot{
+    -webkit-filter: drop-shadow(2px 2px 2px #9c9c9c);
+    filter: drop-shadow(2px 2px 2px #9c9c9c);
+    margin-left: 40px;
+    margin-top: -5px;
+}

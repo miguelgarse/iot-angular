@@ -29,6 +29,7 @@ import { UserDataDialogComponent } from './components/home/administration/regist
 import { ChangePasswordDialogComponent } from './components/login/change-password-dialog/change-password-dialog.component';
 import { SensorSelectionDialogComponent } from './components/home/projects/form-project/sensor-selection-dialog/sensor-selection-dialog.component';
 import { DatePipe } from '@angular/common';
+import { SensorDialogComponent } from './components/home/administration/sensors/sensor-dialog/sensor-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { DatePipe } from '@angular/common';
     NewImageDialogComponent,
     UserDataDialogComponent,
     ChangePasswordDialogComponent,
-    SensorSelectionDialogComponent
+    SensorSelectionDialogComponent,
+    SensorDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -13,23 +13,23 @@ export class ProjectsService {
  
   constructor(private http: HttpClient) { }
 
-  public createProject(project: Project): Observable<any> {
+  public createProject(project: Project): Observable<Project> {
     const formData = new FormData();
     formData.append('project', new Blob([JSON.stringify(project)], {
       type: "application/json"
     }));
 
-    return this.http.post<any>(this.apiEndpoint + "/api/project", formData);
+    return this.http.post<Project>(this.apiEndpoint + "/api/project", formData);
   }
 
-  public updateProject(project: Project, file: File): Observable<any> {
+  public updateProject(project: Project, file: File): Observable<Project> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('project', new Blob([JSON.stringify(project)], {
       type: "application/json"
     }));
 
-    return this.http.put<any>(this.apiEndpoint + "/api/project", formData);
+    return this.http.put<Project>(this.apiEndpoint + "/api/project", formData);
   }
 
   public findAllProjects(): Observable<Project[]> {

@@ -10,6 +10,7 @@ export class Project {
     sensors!: Sensor[];
     dashboardIot!: string;
     collaborationPlatorm!: string;
+    components: string[] = [];
     createdUser: User;
     lastModifieduser: User;
     dateCreated!: Date;
@@ -22,6 +23,8 @@ export class Project {
         this.dashboardIot = "";
         this.createdUser = new User();
         this.lastModifieduser = new User();
+        this.collaborationPlatorm = "";
+        this.dashboardIot = "";
     }
 
 }

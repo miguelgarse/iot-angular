@@ -6,7 +6,7 @@ export class SensorType {
     id!: number;
     description!: string;
     code!: string;
-	category!: SensorCategory;
+	category: SensorCategory;
 	manufacturer!: string;
 	url!: string;
     createdUser!: User;
@@ -14,6 +14,8 @@ export class SensorType {
     dateCreated!: Date;
     dateLastModified!: Date;
 
-    constructor() { }
+    constructor() { 
+       this.category = new SensorCategory(); 
+    }
 
 }
