@@ -55,51 +55,45 @@ export class FormProjectComponent implements OnInit {
     if (currentNavigation != null && currentNavigation.extras.state.id) {
       this.isEdition = true;
 
-      this.projectService.findProjectById(currentNavigation.extras.state.id).subscribe((project: Project) => {
-        if(project && project.id){
-          this.projectFrom = project;
-
-          if(!this.projectFrom.dashboardIot)
-            this.projectFrom.dashboardIot = "";
-          if(!this.projectFrom.collaborationPlatorm)
-            this.projectFrom.collaborationPlatorm = "";
-
-          if(!this.projectFrom.keywords)
-            this.projectFrom.keywords = [];
-          if(!this.projectFrom.components)
-            this.projectFrom.components = [];
-
-          if(project.sensors && project.sensors.length > 0){
-            this.createGraph(project.sensors);
-          }
-          
-          if(project.createdUser.username == this.tokenService.getUserName()){
-            this.isCurrentUserCreator = true;
-          }
-
-          // Construimos la url de la API
-          this.usersService.getCurrentUser().subscribe((user: User) => {
-            this.urlApiRest = this.urlApiRest + project.createdUser.username + "?token=" + user.tokenApi;
-          });
-          
-        } else {
-          // Project not found
-          this.toast.error('Error al recuperar los datos del proyecto seleccionado');
-          this.router.navigate(['home'], { skipLocationChange: true });
-        }
-      }, error => {
-        this.toast.error('Error al recuperar los datos del proyecto seleccionado');
-        throw error;
-      });
-    } else {
-      if(!this.projectFrom.dashboardIot)
-        this.projectFrom.dashboardIot = "";
-      if(!this.projectFrom.collaborationPlatorm)
-        this.projectFrom.collaborationPlatorm = "";
+      this.getProjectById(currentNavigation.extras.state.id);
     }
   }
 
   ngOnInit() { }
+
+  getProjectById(projectId: number): void{
+    this.projectService.findProjectById(projectId).subscribe((project: Project) => {
+      if(project && project.id){
+        this.projectFrom = project;
+
+        if(!this.projectFrom.keywords)
+          this.projectFrom.keywords = [];
+        if(!this.projectFrom.components)
+          this.projectFrom.components = [];
+
+        if(project.sensors && project.sensors.length > 0){
+          this.createGraph(project.sensors);
+        }
+        
+        if(project.createdUser.username == this.tokenService.getUserName()){
+          this.isCurrentUserCreator = true;
+        }
+
+        // Construimos la url de la API
+        this.usersService.getCurrentUser().subscribe((user: User) => {
+          this.urlApiRest = this.urlApiRest + project.createdUser.username + "?token=" + user.tokenApi;
+        });
+        
+      } else {
+        // Project not found
+        this.toast.error('Error al recuperar los datos del proyecto seleccionado');
+        this.router.navigate(['home'], { skipLocationChange: true });
+      }
+    }, error => {
+      this.toast.error('Error al recuperar los datos del proyecto seleccionado');
+      throw error;
+    });
+  }
 
   isFormDisabled(): boolean {
     return this.isEdition && !this.isCurrentUserCreator && !this.tokenService.isAdmin();
@@ -133,7 +127,6 @@ export class FormProjectComponent implements OnInit {
       legends.push(sensor.name);
     });
     
-
     this.graphsOptions = {
       legend: {
         data: legends,
@@ -158,17 +151,19 @@ export class FormProjectComponent implements OnInit {
     if(!this.projectFrom.id){
       // No tiene ID => Creación
       this.projectService.createProject(this.projectFrom).subscribe((project: Project) => {
-        this.toast.info('Proyecto creado correctamente');
-        this.router.navigate(['home/form-project'], { skipLocationChange: true, state: { id: project.id } });
+        this.toast.success('Proyecto creado correctamente');
+        this.getProjectById(project.id);
+        window.scroll(0, 0);
       }, error => {
         this.toast.error('Se ha producido un error al crear un nuevo proyecto');
         throw error;
       });
     } else {
       // Tiene ID => Edición
-      this.projectService.updateProject(this.projectFrom, this.csvFile).subscribe(arg => {
-        this.toast.info('Proyecto editado correctamente');
-        this.router.navigate(['home/form-project'], { skipLocationChange: true, state: { id: this.projectFrom.id } });
+      this.projectService.updateProject(this.projectFrom, this.csvFile).subscribe((project: Project) => {
+        this.toast.success('Proyecto editado correctamente');
+        this.getProjectById(project.id);
+        window.scroll(0, 0);
       }, error => {
         this.toast.error('Se ha producido un error al crear un nuevo proyecto');
         throw error;
