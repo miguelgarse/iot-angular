@@ -23,6 +23,8 @@ export class Project {
         this.dashboardIot = "";
         this.createdUser = new User();
         this.lastModifieduser = new User();
+        this.collaborationPlatorm = "";
+        this.dashboardIot = "";
     }
 
 }
