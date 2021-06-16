@@ -141,6 +141,28 @@ export class FormProjectComponent implements OnInit {
         },
       },
       yAxis: {},
+      dataZoom: [
+        {
+          type: 'slider',
+          xAxisIndex: 0,
+          filterMode: 'empty',
+        },
+        {
+          type: 'slider',
+          yAxisIndex: 0,
+          filterMode: 'empty',
+        },
+        {
+          type: 'inside',
+          xAxisIndex: 0,
+          filterMode: 'empty',
+        },
+        {
+          type: 'inside',
+          yAxisIndex: 0,
+          filterMode: 'empty',
+        },
+      ],
       series: series,
       animationEasing: 'elasticOut',
       animationDelayUpdate: (idx: number) => idx * 5,
