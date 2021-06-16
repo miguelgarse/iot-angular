@@ -53,8 +53,6 @@ export class FormProjectComponent implements OnInit {
     });
 
     if (currentNavigation != null && currentNavigation.extras.state.id) {
-      this.isEdition = true;
-
       this.getProjectById(currentNavigation.extras.state.id);
     }
   }
@@ -62,6 +60,8 @@ export class FormProjectComponent implements OnInit {
   ngOnInit() { }
 
   getProjectById(projectId: number): void{
+    this.isEdition = true;
+    
     this.projectService.findProjectById(projectId).subscribe((project: Project) => {
       if(project && project.id){
         this.projectFrom = project;
