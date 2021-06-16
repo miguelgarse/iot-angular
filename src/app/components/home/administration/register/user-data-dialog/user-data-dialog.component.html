@@ -57,10 +57,15 @@
                 <label for="inputRegisterUser">Fecha de creación</label>
                 <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.dateCreated | date: 'dd/MM/yyyy'">
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
+                <label for="inputRegisterUser">Fecha de último acceso</label>
+                <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.dateLastLogin | date: 'dd/MM/yyyy HH:mm'">
+            </div>
+            <div class="form-group col-md-4">
                 <label for="inputRegisterUser">Creador</label>
                 <input type="text" class="form-control" disabled name="inputRegisterUser" [value]="user.createdUser?user.createdUser.username:''">
             </div>
+            
             <span class="col-md-2"></span>
         </div>
     </form>
