@@ -3,7 +3,7 @@
 <div class="background-image">
 
   <h1 class="display-4" *ngIf="!isEdition">Creación de Proyecto</h1>
-  <h1 class="display-4" *ngIf="!isFormDisabled() && projectFrom.id">Edición de Proyecto</h1>
+  <h1 class="display-4" *ngIf="!isFormDisabled() && projectForm.id">Edición de Proyecto</h1>
   <h1 class="display-4" *ngIf="isFormDisabled()">Visualización de Proyecto</h1>
 
   <form class="col-sm-9 col-md-10 col-lg-10 mx-auto card-body custom-card-body" (keydown.enter)="$event.preventDefault()">
@@ -13,17 +13,22 @@
       <!-- Title -->
       <div class="form-group">
         <label for="title">Título</label>
-        <input type="text" class="form-control" id="title" name="title" placeholder="Título" maxlength="64" 
-              [(ngModel)]="projectFrom.title" [disabled]="isFormDisabled()">
-        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.title.length}}/64</small>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="title" name="title" placeholder="Título" maxlength="64" 
+                [(ngModel)]="projectForm.title" [disabled]="isFormDisabled()">
+          <div class="input-group-append" *ngIf="projectForm.id" title="Usa este identificador para consultar datos a la API">
+            <span class="input-group-text">Identificador:&nbsp;<b>{{projectForm.id}}</b></span>
+          </div>
+        </div>
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectForm.title.length}}/64</small>
       </div>
 
       <!-- Description -->
       <div class="form-group">
         <label for="description">Descripción</label>
         <textarea type="text" class="form-control" id="description" name="description" placeholder="Descripción" maxlength="2000" rows="5"
-                  [(ngModel)]="projectFrom.description" [disabled]="isFormDisabled()"></textarea>
-        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.description.length}}/2000</small>
+                  [(ngModel)]="projectForm.description" [disabled]="isFormDisabled()"></textarea>
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectForm.description.length}}/2000</small>
       </div>
 
       <!-- Keywords -->
@@ -32,7 +37,7 @@
         <input type="text" class="form-control" id="keywords" name="keywords" (keyup.enter)="addKeyword()" [(ngModel)]="keywordInput" *ngIf="!isFormDisabled()"
               placeholder="Introduzca una palabra clave y pulse intro">
         <div class="row col-xs-3 col-sm-7 col-md-9 col-lg-10">
-          <div class="chip" *ngFor="let keyword of projectFrom.keywords">
+          <div class="chip" *ngFor="let keyword of projectForm.keywords">
             {{keyword}} 
             <i class="bi bi-x" style="cursor: pointer" (click)="deleteKeyword(keyword)" *ngIf="!isFormDisabled()"></i>
           </div>
@@ -43,8 +48,8 @@
       <div class="form-group">
         <label for="address">Dirección del proyecto</label>
         <input type="text" class="form-control" id="address" name="address" placeholder="Calle de Alan Turing, s/n, 28031, Madrid" 
-              [(ngModel)]="projectFrom.location" [disabled]="isFormDisabled()">
-        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.location.length}}/255</small>
+              [(ngModel)]="projectForm.location" [disabled]="isFormDisabled()">
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectForm.location.length}}/255</small>
       </div>
 
       <!-- Dashboard Plataforma IoT -->
@@ -52,12 +57,12 @@
         <label for="dashboardIot">Dashboard Plataforma IoT</label>
         <div class="input-group mb-3">
           <input type="text" class="form-control" id="dashboardIot" name="dashboardIot" placeholder="Enlace a la plataforma de IoT asociada" 
-                [(ngModel)]="projectFrom.dashboardIot" [disabled]="isFormDisabled()">
-          <div class="input-group-append" *ngIf="projectFrom.dashboardIot">
-            <a role="button" class="btn btn-outline-secondary" [href]="projectFrom.dashboardIot" target="_blank"><i class="bi bi-link-45deg"></i></a>
+                [(ngModel)]="projectForm.dashboardIot" [disabled]="isFormDisabled()">
+          <div class="input-group-append" *ngIf="projectForm.dashboardIot">
+            <a role="button" class="btn btn-outline-secondary" [href]="projectForm.dashboardIot" target="_blank"><i class="bi bi-link-45deg"></i></a>
           </div>
         </div>
-        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.dashboardIot.length}}/500</small>
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectForm.dashboardIot.length}}/500</small>
       </div>
 
       <!-- Plataforma Desarrollo Colaborativo -->
@@ -65,21 +70,22 @@
         <label for="collaborationPlatorm">Plataforma Desarrollo Colaborativo</label>
         <div class="input-group mb-3">
           <input type="text" class="form-control" id="collaborationPlatorm" name="collaborationPlatorm" placeholder="Enlace al repositorio de GitHub, GitLab, Bitbucket, etc." 
-                [(ngModel)]="projectFrom.collaborationPlatorm" [disabled]="isFormDisabled()">
-          <div class="input-group-append" *ngIf="projectFrom.collaborationPlatorm">
-            <a role="button" class="btn btn-outline-secondary" [href]="projectFrom.collaborationPlatorm" target="_blank"><i class="bi bi-link-45deg"></i></a>
+                [(ngModel)]="projectForm.collaborationPlatorm" [disabled]="isFormDisabled()">
+          <div class="input-group-append" *ngIf="projectForm.collaborationPlatorm">
+            <a role="button" class="btn btn-outline-secondary" [href]="projectForm.collaborationPlatorm" target="_blank"><i class="bi bi-link-45deg"></i></a>
           </div>
         </div>
-        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectFrom.collaborationPlatorm.length || 0}}/500</small>
+        <small *ngIf="!isFormDisabled()" class="form-text text-muted text-right">{{projectForm.collaborationPlatorm.length || 0}}/500</small>
       </div>
 
       <!-- Enlace a la API del proyecto -->
-      <div class="form-group">
+      <div class="form-group" *ngIf="projectForm.id">
         <label for="urlApiRest">Enlace API Rest</label>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="urlApiRest" name="urlApiRest" disabled [(ngModel)]="urlApiRest">
-          <div class="input-group-append" *ngIf="urlApiRest">
-            <a role="button" class="btn btn-outline-secondary" [href]="urlApiRest" target="_blank"><i class="bi bi-link-45deg"></i></a>
+          <input type="text" class="form-control" id="urlApiRest" name="urlApiRest" disabled [(ngModel)]="urlApiRestBase + projectForm.createdUser.username + '/' + projectForm.id + '?token=' + currentUser.tokenApi">
+          <div class="input-group-append" title="Datos en JSON de este proyecto">
+            <a role="button" class="btn btn-outline-secondary" [href]="urlApiRestBase + projectForm.createdUser.username + '/' + projectForm.id + '?token=' + currentUser.tokenApi" 
+              target="_blank"><i class="bi bi-bar-chart-steps"></i></a>
           </div>
         </div>
       </div>
@@ -90,7 +96,7 @@
             <div class="card">
               <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
-                  <img [src]="projectFrom.createdUser.profileImage?projectFrom.createdUser.profileImage:'../../../../assets/avatar.png'" alt="Imagen de perfil" 
+                  <img [src]="projectForm.createdUser.profileImage?projectForm.createdUser.profileImage:'../../../../assets/avatar.png'" alt="Imagen de perfil" 
                       class="rounded-circle" width="100" title="Imagen de perfil">
                 </div>
               </div>
@@ -103,36 +109,36 @@
                 <div>
                   <h6 class="mb-0">Nombre</h6>
                   <div class="text-secondary">
-                    {{projectFrom.createdUser.name}}
+                    {{projectForm.createdUser.name}}
                   </div>
                 </div>
                 <hr>
                 <div>
                   <h6 class="mb-0">Apellidos</h6>
                   <div class="text-secondary">
-                    {{projectFrom.createdUser.lastname}}
+                    {{projectForm.createdUser.lastname}}
                   </div>
                 </div>
                 <hr>
                 <div>
                   <h6 class="mb-0">Correo</h6>
                   <div class="text-secondary">
-                    {{projectFrom.createdUser.email}}
+                    {{projectForm.createdUser.email}}
                   </div>
                 </div>
                 <hr>
                 <div>
                   <h6 class="mb-0">Cuenta de usuario</h6>
                   <div class="text-secondary">
-                    {{projectFrom.createdUser.username}}
+                    {{projectForm.createdUser.username}}
                   </div>
                 </div>
                 <hr>
                 <div>
                   <h6 class="mb-0">Cuenta de Github</h6>
                   <div class="text-secondary">
-                    {{projectFrom.createdUser.githubAccount}} 
-                    <a class="btn" [href]="projectFrom.createdUser.githubAccount" target="_blank" *ngIf="projectFrom.createdUser.githubAccount">
+                    {{projectForm.createdUser.githubAccount}} 
+                    <a class="btn" [href]="projectForm.createdUser.githubAccount" target="_blank" *ngIf="projectForm.createdUser.githubAccount">
                       <i class="bi bi-link-45deg"></i>
                     </a>
                   </div>
@@ -148,7 +154,7 @@
         <div class="form-group col-md-4">
           <label for="createdUser">Autor</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" id="createdUser" name="createdUser" disabled [value]="projectFrom.createdUser.username">
+            <input type="text" class="form-control" id="createdUser" name="createdUser" disabled [value]="projectForm.createdUser.username">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary" type="button" [popover]="userPopup" popoverTitle="Usuario autor" 
                       container="body" [outsideClick]="true">
@@ -161,13 +167,13 @@
         <!-- Fecha de creación -->
         <div class="form-group col-md-4">
           <label for="dateCreated">Fecha de creación</label>
-          <input type="text" class="form-control" id="dateCreated" name="dateCreated" disabled [value]="projectFrom.dateCreated">
+          <input type="text" class="form-control" id="dateCreated" name="dateCreated" disabled [value]="projectForm.dateCreated">
         </div>
 
         <!-- Fecha de modificación -->
         <div class="form-group col-md-4">
           <label for="dateLastModified">Fecha de modificación</label>
-          <input type="text" class="form-control" id="dateLastModified" name="dateLastModified" disabled [value]="projectFrom.dateLastModified">
+          <input type="text" class="form-control" id="dateLastModified" name="dateLastModified" disabled [value]="projectForm.dateLastModified">
         </div>
       </div>
     </fieldset>
@@ -181,20 +187,20 @@
         <input type="text" class="form-control" id="components" name="components" (keyup.enter)="addComponent()" [(ngModel)]="componentsInput" *ngIf="!isFormDisabled()"
               placeholder="Introduzca una palabra clave y pulse intro">
         <div class="row col-xs-3 col-sm-7 col-md-9 col-lg-10">
-          <div class="chip" *ngFor="let component of projectFrom.components">
+          <div class="chip" *ngFor="let component of projectForm.components">
             {{component}} 
             <i class="bi bi-x" style="cursor: pointer" (click)="deleteComponent(component)" *ngIf="!isFormDisabled()"></i>
           </div>
         </div>
       </div>
 
-      <div class="alert alert-warning" role="alert" *ngIf="isEdition && (!projectFrom.sensors || projectFrom.sensors.length == 0)">No se han añadido sensores a este proyecto</div>
+      <div class="alert alert-warning" role="alert" *ngIf="isEdition && (!projectForm.sensors || projectForm.sensors.length == 0)">No se han añadido sensores a este proyecto</div>
 
       <a type="button" class="btn-floating light-blue create-buttom" title="Añadir sensor" *ngIf="!isFormDisabled()" (click)="openSensorModal()">
         <i class="bi bi-plus-square"></i> Añadir sensor
       </a>
 
-      <table class="table table-striped" *ngIf="projectFrom.sensors && projectFrom.sensors.length > 0">
+      <table class="table table-striped table-responsive-lg" *ngIf="projectForm.sensors && projectForm.sensors.length > 0">
         <thead>
             <tr>
                 <th scope="col"></th>
@@ -206,7 +212,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let sensor of projectFrom.sensors; let i = index">
+            <tr *ngFor="let sensor of projectForm.sensors; let i = index">
                 <th scope="row">{{i}}</th>
                 <td class="text-center">{{sensor.name}}</td>
                 <td class="text-center">{{sensor.sensorType.code}}</td>
@@ -217,18 +223,19 @@
                     <a class="btn btn-outline-dark" role="button" (click)="deleteSensor(sensor)" *ngIf="!isFormDisabled()" title="Borrar el sensor">
                         <i class="bi bi-trash"></i>
                     </a>
+                    <a role="button" class="btn btn-outline-secondary" [href]="urlApiRestBase + projectForm.createdUser.username + '/' + projectForm.id + '/' + sensor.name + '?token=' + currentUser.tokenApi" 
+                       target="_blank"  *ngIf="projectForm.id">
+                      <i class="bi bi-bar-chart-steps"></i>
+                    </a>
                   </div>
                 </td>
             </tr>
         </tbody>
       </table>
-
-
     </fieldset>
 
     <fieldset>
-      <legend class="h4">Datasets</legend>
-
+      <legend class="h4">Gráfica</legend>
 
       <!-- Datos de los sensores -->
       <div class="input-group mb-3" *ngIf="!isFormDisabled()">
@@ -243,7 +250,7 @@
       </div>
 
       <!-- Gráficas -->
-      <div echarts [options]="graphsOptions" class="chart" theme="coolTheme" *ngIf="isEdition && (projectFrom.sensors && projectFrom.sensors.length > 0)"></div>
+      <div echarts [options]="graphsOptions" class="chart" theme="coolTheme" *ngIf="isEdition && (projectForm.sensors && projectForm.sensors.length > 0)"></div>
     </fieldset>
 
     <div class="row justify-content-end modal-footer">

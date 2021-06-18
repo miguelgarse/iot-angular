@@ -24,7 +24,7 @@ export class FormProjectComponent implements OnInit {
   public isEdition: boolean = false;
   public isCurrentUserCreator: boolean = false;
 
-  public projectFrom: Project = new Project();
+  public projectForm: Project = new Project();
   public sensorTypesMasterTable: SensorType[] = [];
 
   public csvFile!: File;
@@ -32,7 +32,8 @@ export class FormProjectComponent implements OnInit {
   public keywordInput: string = "";
   public componentsInput: string = "";
   
-  public urlApiRest: string = environment.apiUrl + "/data/";
+  public urlApiRestBase: string = environment.apiUrl + "/data/";
+  public currentUser: User = new User();
 
   constructor(private projectService: ProjectsService,
     private sensorService: SensorService,
@@ -64,12 +65,12 @@ export class FormProjectComponent implements OnInit {
     
     this.projectService.findProjectById(projectId).subscribe((project: Project) => {
       if(project && project.id){
-        this.projectFrom = project;
+        this.projectForm = project;
 
-        if(!this.projectFrom.keywords)
-          this.projectFrom.keywords = [];
-        if(!this.projectFrom.components)
-          this.projectFrom.components = [];
+        if(!this.projectForm.keywords)
+          this.projectForm.keywords = [];
+        if(!this.projectForm.components)
+          this.projectForm.components = [];
 
         if(project.sensors && project.sensors.length > 0){
           this.createGraph(project.sensors);
@@ -81,7 +82,7 @@ export class FormProjectComponent implements OnInit {
 
         // Construimos la url de la API
         this.usersService.getCurrentUser().subscribe((user: User) => {
-          this.urlApiRest = this.urlApiRest + project.createdUser.username + "?token=" + user.tokenApi;
+          this.currentUser = user;
         });
         
       } else {
@@ -170,9 +171,9 @@ export class FormProjectComponent implements OnInit {
   }
 
   createUpdateProject(): void {
-    if(!this.projectFrom.id){
+    if(!this.projectForm.id){
       // No tiene ID => Creación
-      this.projectService.createProject(this.projectFrom).subscribe((project: Project) => {
+      this.projectService.createProject(this.projectForm).subscribe((project: Project) => {
         this.toast.success('Proyecto creado correctamente');
         this.getProjectById(project.id);
         window.scroll(0, 0);
@@ -182,7 +183,7 @@ export class FormProjectComponent implements OnInit {
       });
     } else {
       // Tiene ID => Edición
-      this.projectService.updateProject(this.projectFrom, this.csvFile).subscribe((project: Project) => {
+      this.projectService.updateProject(this.projectForm, this.csvFile).subscribe((project: Project) => {
         this.toast.success('Proyecto editado correctamente');
         this.getProjectById(project.id);
         window.scroll(0, 0);
@@ -237,6 +238,7 @@ export class FormProjectComponent implements OnInit {
       initialState: {
         title: 'Añadir un sensor',
         sensor: new Sensor(),
+        project: this.projectForm,
         sensorTypesMasterTable: this.sensorTypesMasterTable
       }
     };
@@ -245,20 +247,20 @@ export class FormProjectComponent implements OnInit {
 
     bsModalRef.content.action.subscribe((sensor: Sensor) => {
       if (sensor) {
-        if(!this.projectFrom.sensors){
-          this.projectFrom.sensors = [];
+        if(!this.projectForm.sensors){
+          this.projectForm.sensors = [];
         }
-        this.projectFrom.sensors.push(sensor);
+        this.projectForm.sensors.push(sensor);
       }
     });
   }
 
   addKeyword(): void {
     if(this.keywordInput && this.keywordInput.trim().length > 0){
-      if(this.projectFrom.keywords && this.projectFrom.keywords.includes(this.keywordInput)){
+      if(this.projectForm.keywords && this.projectForm.keywords.includes(this.keywordInput)){
         this.toast.info("La palabra clave " + this.keywordInput + " ya está añadida");
       } else{
-        this.projectFrom.keywords.push(this.keywordInput);
+        this.projectForm.keywords.push(this.keywordInput);
   
         this.keywordInput = "";
       }
@@ -266,18 +268,18 @@ export class FormProjectComponent implements OnInit {
   }
 
   deleteKeyword(keyword: string): void {
-    const index: number = this.projectFrom.keywords.indexOf(keyword);
+    const index: number = this.projectForm.keywords.indexOf(keyword);
     if (index !== -1) {
-      this.projectFrom.keywords.splice(index, 1);
+      this.projectForm.keywords.splice(index, 1);
     }   
   }
 
   addComponent(): void {
     if(this.componentsInput && this.componentsInput.trim().length > 0){
-      if(this.projectFrom.components && this.projectFrom.components.includes(this.componentsInput)){
+      if(this.projectForm.components && this.projectForm.components.includes(this.componentsInput)){
         this.toast.info("La palabra clave " + this.componentsInput + " ya está añadida");
       } else{
-        this.projectFrom.components.push(this.componentsInput);
+        this.projectForm.components.push(this.componentsInput);
   
         this.componentsInput = "";
       }
@@ -285,16 +287,16 @@ export class FormProjectComponent implements OnInit {
   }
 
   deleteComponent(component: string): void {
-    const index: number = this.projectFrom.components.indexOf(component);
+    const index: number = this.projectForm.components.indexOf(component);
     if (index !== -1) {
-      this.projectFrom.components.splice(index, 1);
+      this.projectForm.components.splice(index, 1);
     }   
   }
 
   deleteSensor(sensor: Sensor): void{
-    const index: number = this.projectFrom.sensors.indexOf(sensor);
+    const index: number = this.projectForm.sensors.indexOf(sensor);
     if (index !== -1) {
-      this.projectFrom.sensors.splice(index, 1);
+      this.projectForm.sensors.splice(index, 1);
     }  
   }
   
