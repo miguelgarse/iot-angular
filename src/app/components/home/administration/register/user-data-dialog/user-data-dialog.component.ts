@@ -90,7 +90,8 @@ export class UserDataDialogComponent implements OnInit {
   }
 
   public autocompleteFields(): void {
-    if(!this.user || !this.user.id){
+    if((!this.user || !this.user.id)
+        && this.user.name && this.user.lastname){
       // Estamos en creacion => Ejecutamos la ayuda
       let date: Date = new Date();
 

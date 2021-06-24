@@ -11,7 +11,7 @@
         <h5 class="card-title text-center">Tabla de usuarios</h5>
 
         <div class="table-responsive-lg">
-            <table class="table table-striped">
+            <table class="table table-striped" *ngIf="usersList && usersList.length > 0">
                 <thead>
                     <tr>
                         <th scope="col"></th>

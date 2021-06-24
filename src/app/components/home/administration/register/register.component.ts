@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
 
     bsModalRef.content.action.subscribe((user: User) => {
       if (user) {
-        this.usersService.registerUser(user).subscribe(response => {
+        this.usersService.registerUser(user).subscribe((createdUser: User) => {
           this.toastr.success("Usuario registrado correctamente: " + user.username);
           this.getUserList(); // Refrescar tabla de usuarios
         }, (error: any) => {

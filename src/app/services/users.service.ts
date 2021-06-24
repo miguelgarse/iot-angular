@@ -24,7 +24,7 @@ export class UsersService {
     return this.http.get<any>(this.apiEndpoint + "/" + username);
   }
 
-  public registerUser(user: User): Observable<any> {
+  public registerUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiEndpoint + "/api/user/createUser", user);
   }
 
