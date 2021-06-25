@@ -61,7 +61,10 @@ export class SensorSelectionDialogComponent implements OnInit {
   confirm(): void {
     this.sensor.name = this.sensor.name.trim();    
 
-    let sensorsRepeated: Sensor[] = this.project.sensors.filter(sensor => sensor.name == this.sensor.name);
+    let sensorsRepeated: Sensor[] = [];
+    if(this.project.sensors && this.project.sensors.length > 0){
+      sensorsRepeated = this.project.sensors.filter(sensor => sensor.name == this.sensor.name);
+    }
 
     if(sensorsRepeated && sensorsRepeated.length > 0){
       this.toastr.error(this.sensor.name + " ya está creado en este proyecto. Introduce otro nombre")

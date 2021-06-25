@@ -42,7 +42,11 @@ export class RegisterComponent implements OnInit {
           this.toastr.success("Usuario registrado correctamente: " + user.username);
           this.getUserList(); // Refrescar tabla de usuarios
         }, (error: any) => {
-         throw error;
+          if(error.error && error.error.message){
+            this.toastr.error(error.error.message);
+          } else{
+            throw error;
+          }
         });
       }
     });
