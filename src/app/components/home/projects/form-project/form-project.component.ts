@@ -13,6 +13,7 @@ import { SensorSelectionDialogComponent } from './sensor-selection-dialog/sensor
 import { environment } from 'src/environments/environment';
 import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/app/models/User';
+import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-form-project',
@@ -101,21 +102,23 @@ export class FormProjectComponent implements OnInit {
   }
 
   createGraph(sensors: Sensor[]): void{
-    const xAxisData = [];
     const series: Object[] = [];
     const legends: string[] = [];
-
-    // Generate X Axis
-    for (let i = 0; i < sensors[0].sensorValues.length; i++) {
-      let timestamp: Date = sensors[0].sensorValues[i].timestamp;
-      xAxisData.push(this.datepipe.transform(timestamp, 'dd/MM/yyyy'));
-    }
 
     // Generate series
     sensors.forEach(sensor => {
       let dataArray = [];
       for (let i = 0; i < sensor.sensorValues.length; i++) {
-        dataArray.push(sensor.sensorValues[i].value);
+        let time: Date = new Date(sensor.sensorValues[i].timestamp);
+        dataArray.push(
+            {
+              name: time.toString(),
+              value: [
+                time,
+                sensor.sensorValues[i].value
+              ]
+            }
+          );
       }
       
       series.push({
@@ -133,15 +136,22 @@ export class FormProjectComponent implements OnInit {
         data: legends,
         align: 'left',
       },
-      tooltip: {},
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+        }
+      },
       xAxis: {
-        data: xAxisData,
+        type: 'time',
         silent: true,
         splitLine: {
           show: false,
         },
       },
-      yAxis: {},
+      yAxis: {
+        type: 'value'
+      },
       dataZoom: [
         {
           type: 'slider',
@@ -298,6 +308,31 @@ export class FormProjectComponent implements OnInit {
     if (index !== -1) {
       this.projectForm.sensors.splice(index, 1);
     }  
+  }
+
+  deleteProject(): void{
+    let bsModalRef!: BsModalRef;
+
+    let config = {
+      ignoreBackdropClick: true,
+      initialState: {
+        title: 'Borrar Proyecto',
+        message: '¿Desea borrar el proyecto ' + this.projectForm.title + '?'
+      }
+    };
+
+    bsModalRef = this.modalService.show(ConfirmDialogComponent, config);
+
+    bsModalRef.content.action.subscribe((value: any) => {
+      if(value){
+        this.projectService.deleteProjectById(this.projectForm.id).subscribe(() => {
+          this.toast.success("El proyecto " + this.projectForm.title + " ha sido borrado");
+          this.router.navigate(['home'], { skipLocationChange: true });
+        }, error => {
+          throw error;
+        });
+      }
+    });
   }
   
 }
