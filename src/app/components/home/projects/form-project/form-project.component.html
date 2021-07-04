@@ -254,9 +254,9 @@
     </fieldset>
 
     <div class="row justify-content-end modal-footer">
-      <button type="button" class="btn btn-danger col-auto mr-auto" *ngIf="!isFormDisabled()" (click)="deleteProject()" title="Eliminar proyecto">Eliminar</button>
-        <button type="button" class="btn btn-secondary" (click)="cancelProject()" title="Volver a la tabla de proyectos">Cancelar</button>
-        <button type="button" class="btn btn-primary" *ngIf="!isFormDisabled()" (click)="createUpdateProject()" title="Guardar cambios">Guardar</button>
+      <button type="button" class="btn btn-danger col-auto mr-auto" *ngIf="!isFormDisabled() && isEdition" (click)="deleteProject()" title="Eliminar proyecto">Eliminar</button>
+      <button type="button" class="btn btn-secondary" (click)="cancelProject()" title="Volver a la tabla de proyectos">Cancelar</button>
+      <button type="button" class="btn btn-primary" *ngIf="!isFormDisabled()" (click)="createUpdateProject()" title="Guardar cambios">Guardar</button>
     </div>
     
   </form>
